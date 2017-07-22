@@ -1,0 +1,20 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "nodemon": "^1.11.0"
+  },
+  "scripts": {
+    "start": "webpack-dev-server",
+    "start:server": "nodemon app.js -L"
+  },
+  "babel": {
+    "presets": [
+      "react-app"
+    ]
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  }
+}

@@ -1,0 +1,20 @@
+version: "2"
+services:
+  donations-worker:
+    build: ./donations-worker
+    env_file:
+      - ./donations-worker/.env
+    links:
+      - mongo
+  # admin:
+  #   build: ./admin
+  #   ports:
+  #     - "3001:3001"
+  # web:
+  #   build: ./web
+  #   ports:
+  #     - "3000:3000"
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
