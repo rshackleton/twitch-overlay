@@ -3,11 +3,11 @@ const express = require('express');
 
 const app = express();
 
-const nodeEnv = process.env.NODE_ENV || 'production';
-const host = process.env.HOST || '0.0.0.0';
-const port = process.env.PORT || 5000;
+const NODE_ENV = process.env.NODE_ENV || 'production';
+const HOST = process.env.HOST || '0.0.0.0';
+const PORT = process.env.PORT || 5000;
 
-const isProduction = (nodeEnv === 'production');
+const isProduction = (NODE_ENV === 'production');
 
 if (!isProduction) {
   const webpack = require('webpack');
@@ -17,23 +17,26 @@ if (!isProduction) {
   const compiler = webpack(config);
 
   app.use(webpackDevMiddleware(compiler, {
+    historyApiFallback: true,
     noInfo: true,
     publicPath: config.output.publicPath,
     stats: {
       colors: true
     },
-    historyApiFallback: true
+    watchOptions: {
+      poll: true,
+    },
   }));
 
   app.use(webpackHotMiddleware(compiler));
 }
 
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, 'dist')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + 'build/index.html'));
+  res.sendFile(path.join(__dirname + 'dist/index.html'));
 });
 
-app.listen(port, host, function () {
-  console.log(`Twitch overlay admin listening on ${port}`);
+app.listen(PORT, HOST, function () {
+  console.log(`Twitch overlay admin listening on http://${HOST}:${PORT}`);
 });

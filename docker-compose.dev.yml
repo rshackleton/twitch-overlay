@@ -1,16 +1,22 @@
 version: "2"
 services:
   donations-worker:
+    command: ["yarn", "start:dev"]
+    env_file:
+      - "./donations-worker/dev.env"
     volumes:
-      - ./donations-worker:/opt/app
+      - "./donations-worker:/opt/app"
+
   admin:
-    command: ["yarn", "start"]
+    command: ["yarn", "start:dev"]
+    env_file:
+      - "./admin/dev.env"
     volumes:
-      - ./admin:/opt/app
+      - "./admin:/opt/app"
+
   web:
-    command: ["yarn", "start"]
+    command: ["yarn", "start:dev"]
+    env_file:
+      - "./web/dev.env"
     volumes:
-      - ./web:/opt/app
-  mongo:
-    volumes:
-      - /data/db
+      - "./web:/opt/app"

@@ -1,0 +1,25 @@
+version: "2"
+services:
+  donations-worker:
+    env_file:
+      - "./donations-worker/prd.env"
+
+  admin:
+    env_file:
+      - "./admin/prd.env"
+
+  web:
+    env_file:
+      - "./web/prd.env"
+
+  letsencrypt-nginx-proxy-companion:
+    restart: always
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt-nginx-proxy-companion
+    volumes_from:
+      - nginx
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./volumes/proxy/certs:/etc/nginx/certs:rw"
+    environment:
+      - NGINX_DOCKER_GEN_CONTAINER=nginx-gen

@@ -55,4 +55,11 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
+*.env
+!example.env
+
+# let's encrypt certs
+certs/
+
+# webpack output
+dist/

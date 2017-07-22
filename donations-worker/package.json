@@ -10,6 +10,10 @@
     "request-promise-native": "^1.0.4"
   },
   "scripts": {
-    "start": "nodemon app.js -L"
+    "start": "cross-env NODE_ENV=production nodemon app.js -L",
+    "start:dev": "cross-env NODE_ENV=development nodemon app.js -L"
+  },
+  "devDependencies": {
+    "cross-env": "^5.0.1"
   }
 }

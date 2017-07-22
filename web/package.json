@@ -2,12 +2,10 @@
   "name": "web",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "nodemon": "^1.11.0"
-  },
   "scripts": {
-    "start": "webpack-dev-server",
-    "start:server": "nodemon app.js -L"
+    "start": "cross-env NODE_ENV=production nodemon app.js -L",
+    "start:dev": "cross-env NODE_ENV=development nodemon app.js -L",
+    "build": "cross-env NODE_ENV=production webpack -p --config config/webpack.prd.config.js"
   },
   "babel": {
     "presets": [
@@ -16,5 +14,32 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.23.0",
+    "express": "^4.15.3",
+    "nodemon": "^1.11.0",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "babel-preset-react-app": "^3.0.1",
+    "cross-env": "^5.0.1",
+    "css-loader": "^0.28.4",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "file-loader": "^0.11.2",
+    "html-webpack-plugin": "^2.29.0",
+    "node-sass": "^4.5.3",
+    "sass-loader": "^6.0.6",
+    "script-ext-html-webpack-plugin": "^1.8.5",
+    "style-loader": "^0.18.2",
+    "url-loader": "^0.5.9",
+    "webpack": "^3.3.0",
+    "webpack-dev-middleware": "^1.11.0",
+    "webpack-hot-middleware": "^2.18.2",
+    "webpack-merge": "^4.1.0",
+    "webpack-stats-plugin": "^0.1.5"
   }
 }
