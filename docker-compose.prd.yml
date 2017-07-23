@@ -15,15 +15,3 @@ services:
   mongo:
     volumes:
       - "./mongodata:/data/db"
-
-  letsencrypt-nginx-proxy-companion:
-    restart: always
-    image: jrcs/letsencrypt-nginx-proxy-companion
-    container_name: letsencrypt-nginx-proxy-companion
-    volumes_from:
-      - nginx
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./volumes/proxy/certs:/etc/nginx/certs:rw"
-    environment:
-      - NGINX_DOCKER_GEN_CONTAINER=nginx-gen

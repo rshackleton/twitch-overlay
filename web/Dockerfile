@@ -1,7 +1,6 @@
 FROM mhart/alpine-node:latest
 
 ENV NODE_ENV production
-ENV PORT 3000
 
 ADD package.json /tmp/package.json
 RUN cd /tmp && yarn --production=false
@@ -12,7 +11,5 @@ WORKDIR /opt/app
 ADD . /opt/app
 
 RUN yarn run build
-
-EXPOSE 3000
 
 CMD ["yarn", "start"]
