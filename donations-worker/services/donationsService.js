@@ -1,5 +1,7 @@
 const moment = require('moment');
 const request = require('request-promise-native');
+const winston = require('winston');
+
 const dbService = require('./dbService');
 
 function fetchDonations() {
@@ -8,14 +10,14 @@ function fetchDonations() {
 
   const donationsUrl = `https://api.justgiving.com/v1/fundraising/pages/${pageShortName}/donations`;
 
-  console.log(`Fetching ${donationsUrl}`);
+  winston.info(`Fetching ${donationsUrl}`);
 
   return request
     .get(donationsUrl, { json: true, headers: { 'x-api-key': appId} })
     .then(data => cleanDonations(data.donations))
     .then(donations => storeDonations(donations))
     .catch(function (err) {
-      console.error(err.message);
+      winston.error(err.message);
       return err;
     });
 }

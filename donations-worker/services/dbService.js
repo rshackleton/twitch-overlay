@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const winston = require('winston');
 mongoose.Promise = global.Promise;
 
 const host = process.env.MONGO_PORT_27017_TCP_ADDR || 'mongo';
@@ -7,7 +8,7 @@ const dbName = 'donations';
 
 const mongoUri = `mongodb://${host}:${port}/${dbName}`;
 
-console.log(`Connecting to ${mongoUri}`);
+winston.info(`Connecting to ${mongoUri}`);
 
 mongoose.connect(mongoUri, { useMongoClient: true });
 
@@ -29,7 +30,7 @@ function saveDonation(data) {
   return Donation.findOne({ externalId: data.externalId }).then(
     (doc) => {
       if (doc) {
-        console.log(`Donation ${data.externalId} already exists`);
+        winston.info(`Donation ${data.externalId} already exists`);
         return null;
       }
       // Create donation model.
@@ -38,16 +39,16 @@ function saveDonation(data) {
       // Save to mongodb.
       return donation.save()
         .then((donation) => {
-          console.log(`Saved donation ${donation.externalId}`);
+          winston.info(`Saved donation ${donation.externalId}`);
           return donation;
         })
         .catch((err) => {
-          console.error(err);
+          winston.error(err);
           return err;
         });
     },
     (err) => {
-      console.log(err);
+      winston.info(err);
       return null;
     }
   );
