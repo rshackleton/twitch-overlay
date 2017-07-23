@@ -9,7 +9,6 @@ services:
     environment:
       - "VIRTUAL_NETWORK=nginx-proxy"
       - "VIRTUAL_PORT=3000"
-      - "LETSENCRYPT_TEST=true"
 
   admin:
     restart: always
@@ -20,7 +19,6 @@ services:
     environment:
       - "VIRTUAL_NETWORK=nginx-proxy"
       - "VIRTUAL_PORT=3001"
-      - "LETSENCRYPT_TEST=true"
 
   donations-worker:
     restart: always
