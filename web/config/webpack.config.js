@@ -1,3 +1,4 @@
+/* eslint-disable */
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
@@ -10,6 +11,12 @@ const root = path.join(__dirname, '../');
 module.exports = {
   module: {
     rules: [
+      {
+        test: /\.jsx?$/,
+        use: 'eslint-loader',
+        enforce: 'pre',
+        exclude: /node_modules/,
+      },
       {
         test: /\.jsx?$/,
         use: 'babel-loader',
