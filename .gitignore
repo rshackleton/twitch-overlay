@@ -63,3 +63,6 @@ certs/
 
 # webpack output
 dist/
+
+# ignore mongdb data volume
+mongodata/
