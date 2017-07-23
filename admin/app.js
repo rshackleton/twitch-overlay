@@ -1,6 +1,16 @@
 /* eslint-disable */
 const path = require('path');
 const express = require('express');
+const winston = require('winston');
+const expressWinston = require('express-winston');
+require('winston-loggly-bulk');
+
+winston.add(winston.transports.Loggly, {
+  subdomain: process.env.LOGGLY_SUBDOMAIN,
+  token: process.env.LOGGLY_TOKEN,
+  json: true,
+  tags: ['twitch-overlay', 'admin'],
+});
 
 const app = express();
 
@@ -32,12 +42,34 @@ if (!isProduction) {
   app.use(webpackHotMiddleware(compiler));
 }
 
+app.use(expressWinston.logger({
+  transports: [
+    new winston.transports.Loggly({
+      subdomain: process.env.LOGGLY_SUBDOMAIN,
+      token: process.env.LOGGLY_TOKEN,
+      json: true,
+      tags: ['twitch-overlay', 'admin'],
+    }),
+  ],
+}));
+
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + 'dist/index.html'));
 });
 
+app.use(expressWinston.errorLogger({
+  transports: [
+    new winston.transports.Loggly({
+      subdomain: process.env.LOGGLY_SUBDOMAIN,
+      token: process.env.LOGGLY_TOKEN,
+      json: true,
+      tags: ['twitch-overlay', 'admin'],
+    }),
+  ],
+}));
+
 app.listen(PORT, HOST, function () {
-  console.log(`Twitch overlay admin listening on http://${HOST}:${PORT}`);
+  winston.info(`Twitch overlay admin listening on http://${HOST}:${PORT}`);
 });
