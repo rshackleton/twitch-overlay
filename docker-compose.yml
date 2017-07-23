@@ -20,6 +20,9 @@ services:
     ports:
       - "${WEB_PORT}:${WEB_PORT}"
     environment:
+      - "LETSENCRYPT_EMAIL=${EMAIL_ADDRESS}"
+      - "LETSENCRYPT_HOST=${WEB_HOST}"
+      - "VIRTUAL_HOST=${WEB_HOST}"
       - "VIRTUAL_NETWORK=reverse-proxy"
       - "VIRTUAL_PORT=${WEB_PORT}"
 
@@ -35,6 +38,9 @@ services:
     ports:
       - "${ADMIN_PORT}:${ADMIN_PORT}"
     environment:
+      - "LETSENCRYPT_EMAIL=${EMAIL_ADDRESS}"
+      - "LETSENCRYPT_HOST=${ADMIN_HOST}"
+      - "VIRTUAL_HOST=${ADMIN_HOST}"
       - "VIRTUAL_NETWORK=reverse-proxy"
       - "VIRTUAL_PORT=${ADMIN_PORT}"
 
