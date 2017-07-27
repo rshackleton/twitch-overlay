@@ -1,17 +1,6 @@
 version: "2"
+
 services:
-  donations-worker:
-    env_file:
-      - "./donations-worker/prd.env"
-
-  admin:
-    env_file:
-      - "./admin/prd.env"
-
-  web:
-    env_file:
-      - "./web/prd.env"
-
   mongo:
     volumes:
       - "./mongodata:/data/db"

@@ -22,6 +22,8 @@ services:
     environment:
       - "LETSENCRYPT_EMAIL=${EMAIL_ADDRESS}"
       - "LETSENCRYPT_HOST=${WEB_HOST}"
+      - "LOGGLY_TOKEN=${LOGGLY_TOKEN}"
+      - "LOGGLY_SUBDOMAIN=${LOGGLY_SUBDOMAIN}"
       - "VIRTUAL_HOST=${WEB_HOST}"
       - "VIRTUAL_NETWORK=reverse-proxy"
       - "VIRTUAL_PORT=${WEB_PORT}"
@@ -40,9 +42,31 @@ services:
     environment:
       - "LETSENCRYPT_EMAIL=${EMAIL_ADDRESS}"
       - "LETSENCRYPT_HOST=${ADMIN_HOST}"
+      - "LOGGLY_TOKEN=${LOGGLY_TOKEN}"
+      - "LOGGLY_SUBDOMAIN=${LOGGLY_SUBDOMAIN}"
       - "VIRTUAL_HOST=${ADMIN_HOST}"
       - "VIRTUAL_NETWORK=reverse-proxy"
       - "VIRTUAL_PORT=${ADMIN_PORT}"
+
+  api:
+    restart: always
+    build: ./api
+    image: api
+    networks:
+      - reverse-proxy
+      - back
+    expose:
+      - "${API_PORT}"
+    ports:
+      - "${API_PORT}:${API_PORT}"
+    environment:
+      - "LETSENCRYPT_EMAIL=${EMAIL_ADDRESS}"
+      - "LETSENCRYPT_HOST=${API_HOST}"
+      - "LOGGLY_TOKEN=${LOGGLY_TOKEN}"
+      - "LOGGLY_SUBDOMAIN=${LOGGLY_SUBDOMAIN}"
+      - "VIRTUAL_HOST=${API_HOST}"
+      - "VIRTUAL_NETWORK=reverse-proxy"
+      - "VIRTUAL_PORT=${API_PORT}"
 
   donations-worker:
     restart: always
@@ -52,6 +76,12 @@ services:
       - back
     links:
       - mongo
+    environment:
+      - "JUSTGIVING_APP_ID=${JUSTGIVING_APP_ID}"
+      - "JUSTGIVING_PAGE=${JUSTGIVING_PAGE}"
+      - "LOGGLY_TOKEN=${LOGGLY_TOKEN}"
+      - "LOGGLY_SUBDOMAIN=${LOGGLY_SUBDOMAIN}"
+      - "POLL_INTERVAL=${POLL_INTERVAL}"
 
   mongo:
     restart: always
