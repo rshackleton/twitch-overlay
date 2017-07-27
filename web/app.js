@@ -1,16 +1,9 @@
 /* eslint-disable */
 const path = require('path');
 const express = require('express');
-const winston = require('winston');
-const expressWinston = require('express-winston');
-require('winston-loggly-bulk');
+const morgan = require('morgan');
 
-winston.add(winston.transports.Loggly, {
-  subdomain: process.env.LOGGLY_SUBDOMAIN,
-  token: process.env.LOGGLY_TOKEN,
-  json: true,
-  tags: ['twitch-overlay', 'web'],
-});
+const logger = require('./services/logger');
 
 const app = express();
 
@@ -42,16 +35,7 @@ if (!isProduction) {
   app.use(webpackHotMiddleware(compiler));
 }
 
-app.use(expressWinston.logger({
-  transports: [
-    new winston.transports.Loggly({
-      subdomain: process.env.LOGGLY_SUBDOMAIN,
-      token: process.env.LOGGLY_TOKEN,
-      json: true,
-      tags: ['twitch-overlay', 'web'],
-    }),
-  ],
-}));
+app.use(morgan('combined', { 'stream': logger.stream }));
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
@@ -59,17 +43,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + 'dist/index.html'));
 });
 
-app.use(expressWinston.errorLogger({
-  transports: [
-    new winston.transports.Loggly({
-      subdomain: process.env.LOGGLY_SUBDOMAIN,
-      token: process.env.LOGGLY_TOKEN,
-      json: true,
-      tags: ['twitch-overlay', 'web'],
-    }),
-  ],
-}));
-
 app.listen(PORT, HOST, function () {
-  winston.info(`Twitch overlay web listening on http://${HOST}:${PORT}`);
+  logger.info(`Twitch overlay web listening on http://${HOST}:${PORT}`);
 });

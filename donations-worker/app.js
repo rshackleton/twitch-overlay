@@ -1,16 +1,9 @@
-const winston = require('winston');
-require('winston-loggly-bulk');
-
-const donationsService = require('./services/donationsService');
-
-winston.add(winston.transports.Loggly, {
-  subdomain: process.env.LOGGLY_SUBDOMAIN,
-  token: process.env.LOGGLY_TOKEN,
-  json: true,
-  tags: ['twitch-overlay', 'donation-worker'],
-});
-
-winston.info('JustGiving API Worker Started');
+const donations = require('./services/donations');
+const logger = require('./services/logger');
 
 const delay = process.env.POLL_INTERVAL || (1000 * 60 * 5);
-const interval = setInterval(donationsService.fetchDonations, delay);
+const interval = setInterval(donations.fetch, delay);
+
+logger.debug(`Twitch overlay worker started with interval ${delay}`);
+
+donations.fetch();

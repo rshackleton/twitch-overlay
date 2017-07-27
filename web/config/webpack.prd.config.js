@@ -3,6 +3,8 @@ const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ManifestPlugin = require('webpack-manifest-plugin');
+const OfflinePlugin = require("offline-plugin");
 
 const root = path.join(__dirname, '../');
 
@@ -38,7 +40,9 @@ module.exports = merge.smart(require('./webpack.config'), {
     publicPath: '',
   },
   plugins: [
-    new ExtractTextPlugin('[name].[chunkhash].css', { disable: false }),
     new webpack.optimize.ModuleConcatenationPlugin(),
+    new ExtractTextPlugin('[name].[chunkhash].css', { disable: false }),
+    new ManifestPlugin(),
+    new OfflinePlugin(),
   ],
 });
