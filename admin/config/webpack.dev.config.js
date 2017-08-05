@@ -30,7 +30,7 @@ module.exports = merge.smart(require('./webpack.config'), {
   output: {
     filename: '[name].[hash].js',
     path: path.join(root, 'dist'),
-    publicPath: '',
+    publicPath: '/',
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),

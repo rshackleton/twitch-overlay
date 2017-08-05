@@ -23,12 +23,16 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.(jpg|jpeg|png|svg)$/,
+        test: /\.(jpg|jpeg|png)$/,
         use: [
           { loader: 'url-loader', options: { limit: 10000 } },
         ],
-      }
-    ]
+      },
+      {
+        test: /\.(eot|svg|woff|woff2)$/,
+        use: 'file-loader',
+      },
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({ template: path.join(root, 'src/index.html') }),
