@@ -9,7 +9,7 @@ function fetch() {
   const appId = process.env.JUSTGIVING_APP_ID || '';
   const pageShortName = process.env.JUSTGIVING_PAGE || 'example';
 
-  const donationsUrl = `https://api.justgiving.com/v1/fundraising/pages/${pageShortName}/donations`;
+  const donationsUrl = `https://api.justgiving.com/v1/fundraising/pages/${pageShortName}/donations?pageNum=1&pageSize=100`;
 
   logger.info(`Fetching ${donationsUrl}`);
 
