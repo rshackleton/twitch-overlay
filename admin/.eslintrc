@@ -6,12 +6,15 @@
   "parser": "babel-eslint",
   "rules": {
     "strict": 0,
+    "import/extensions": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/no-unresolved": "off",
     "react/forbid-prop-types": "off"
   },
   "settings": {
     "import/resolver": {
       "webpack": {
-        "config": "config/webpack.config.js"
+        "config": "./config/webpack.config.js"
       }
     }
   }

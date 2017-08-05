@@ -48,7 +48,11 @@ module.exports = {
   ],
   resolve: {
     alias: {
-      img: path.join(root, 'src/img'),
+      actions: path.join(root, 'src/core/actions'),
+      components: path.join(root, 'src/components'),
+      epics: path.join(root, 'src/core/epics'),
+      routes: path.join(root, 'src/routes'),
+      styles: path.join(root, 'src/styles'),
     },
     extensions: ['.js', '.json', '.jsx'],
   },

@@ -19,6 +19,7 @@
     "material-ui-icons": "^1.0.0-alpha.19",
     "morgan": "^1.8.2",
     "nodemon": "^1.11.0",
+    "numeral": "^2.0.6",
     "offline-plugin": "^4.8.3",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
@@ -28,6 +29,9 @@
     "react-router-dom": "^4.1.2",
     "react-router-redux": "next",
     "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
+    "redux-observable": "^0.14.1",
+    "rxjs": "^5.4.2",
     "winston": "^2.3.1",
     "winston-loggly-bulk": "^2.0.0"
   },

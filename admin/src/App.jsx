@@ -1,9 +1,7 @@
 import React from 'react';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import createHistory from 'history/createBrowserHistory';
 import { Route } from 'react-router-dom';
-import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
+import { ConnectedRouter } from 'react-router-redux';
 import PropTypes from 'prop-types';
 
 import {
@@ -11,20 +9,11 @@ import {
   withStyles,
 } from 'material-ui/styles';
 
-import withRoot from '../../components/withRoot';
-import Donations from '../Donations';
-import Home from '../Home';
-import Navigation from '../../components/Navigation';
+import { Donations, Home } from 'routes';
+import { withRoot, Navigation } from 'components';
 
-const history = createHistory();
-const middleware = routerMiddleware(history);
-
-const store = createStore(
-  combineReducers({
-    router: routerReducer,
-  }),
-  applyMiddleware(middleware),
-);
+import history from './core/history';
+import store from './core/store';
 
 const routes = [{
   key: 'root.home',
@@ -39,11 +28,14 @@ const routes = [{
   title: 'Donations',
 }];
 
-const styleSheet = createStyleSheet({
+const styleSheet = createStyleSheet(theme => ({
   root: {
     marginTop: 56,
+    [theme.breakpoints.up('sm')]: {
+      marginTop: 64,
+    },
   },
-});
+}));
 
 const App = ({ classes }) => (
   <Provider store={store}>
