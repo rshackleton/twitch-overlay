@@ -49,18 +49,20 @@ module.exports = merge.smart(require('./webpack.config'), {
         'NODE_ENV': JSON.stringify('production')
       },
       API_HOST: JSON.stringify(process.env.API_HOST),
+      API_PROTOCOL: JSON.stringify(process.env.API_PROTOCOL),
     }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,
       mangle: {
         screw_ie8: true,
-        keep_fnames: true
+        keep_fnames: true,
       },
       compress: {
-        screw_ie8: true
+        screw_ie8: true,
+        warnings: false,
       },
-      comments: false
+      comments: false,
     }),
     new ExtractTextPlugin('[name].[chunkhash].css', { disable: false }),
     new ManifestPlugin(),

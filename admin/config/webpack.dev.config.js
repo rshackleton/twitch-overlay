@@ -38,6 +38,7 @@ module.exports = merge.smart(require('./webpack.config'), {
         'NODE_ENV': JSON.stringify('development')
       },
       API_HOST: JSON.stringify(process.env.API_HOST),
+      API_PROTOCOL: JSON.stringify(process.env.API_PROTOCOL),
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),

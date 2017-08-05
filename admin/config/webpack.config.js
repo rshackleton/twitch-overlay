@@ -1,5 +1,6 @@
 /* eslint-disable */
 const path = require('path');
+const dotenv = require('dotenv');
 const webpack = require('webpack');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -7,6 +8,8 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const StatsWriterPlugin = require('webpack-stats-plugin').StatsWriterPlugin;
 
 const root = path.join(__dirname, '../');
+
+dotenv.config({ path: path.join(root, '../.env') });
 
 module.exports = {
   module: {

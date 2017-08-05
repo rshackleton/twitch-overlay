@@ -1,4 +1,4 @@
-/* global API_HOST:false */
+/* global API_HOST:false, API_PROTOCOL:false */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Observable } from 'rxjs/Observable';
@@ -34,7 +34,7 @@ class DonationStream extends Component {
   }
   createStream() {
     const observable = new Observable((observer) => {
-      this.socket = io(`http://${API_HOST}`);
+      this.socket = io(`${API_PROTOCOL}://${API_HOST}`);
       this.socket.on('donation', (update) => {
         observer.next(update.new_val);
       });

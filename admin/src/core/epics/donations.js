@@ -1,4 +1,4 @@
-/* global API_HOST:false */
+/* global API_HOST:false, API_PROTOCOL:false */
 import { Observable } from 'rxjs/Observable';
 import { combineEpics } from 'redux-observable';
 
@@ -10,7 +10,7 @@ import {
 // api
 const api = {
   fetchDonations: () => {
-    const request = fetch(`http://${API_HOST}/donations`)
+    const request = fetch(`${API_PROTOCOL}://${API_HOST}/donations`)
       .then(res => res.json());
     return Observable.from(request);
   },
