@@ -40,10 +40,10 @@ function clean(donation) {
 function save(donation) {
   return db.retrieveDonation(donation.externalId).then(
     (arr) => {
-      // if (arr && arr.length) {
-      //   logger.info(`Donation ${donation.externalId} already exists`);
-      //   return null;
-      // }
+      if (arr && arr.length) {
+        logger.info(`Donation ${donation.externalId} already exists`);
+        return null;
+      }
 
       return db.insertDonation(donation).then(
         () => logger.info(`Saved donation ${donation.externalId}`)
