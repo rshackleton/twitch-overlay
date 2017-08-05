@@ -45,6 +45,9 @@ module.exports = {
         return JSON.stringify(stats, null, 2);
       },
     }),
+    new webpack.DefinePlugin({
+      API_HOST: JSON.stringify(process.env.API_HOST),
+    }),
   ],
   resolve: {
     alias: {

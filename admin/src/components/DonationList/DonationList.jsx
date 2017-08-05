@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import PropTypes from 'prop-types';
 import numeral from 'numeral';
@@ -34,7 +33,7 @@ const DonationList = ({ classes, donations }) => (
     <Grid container>
       <Grid item xs={12}>
         {donations.map(item => (
-          <Card key={item._id} className={classes.card}>
+          <Card key={item.id} className={classes.card}>
             <CardContent>
               <Typography type="headline">{item.donorDisplayName}</Typography>
               <Typography type="subheading" paragraph>{numeral(item.amount).format('$0.00')}</Typography>

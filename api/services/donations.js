@@ -1,12 +1,24 @@
+const Rx = require('rxjs');
+const createObservable = require('rethinkdb-observable')
 const logger = require('./logger');
-const models = require('../models');
+const db = require('./rethinkdb');
 
 function all() {
-  return models.Donation.find()
+  return db.initialise()
+    .then(() => db.retrieveDonations())
     .catch((err) => {
-      logger.error(err);
-      return null;
+      logger.error(err.message);
+      return err;
     });
 }
 
-module.exports = { all };
+function stream() {
+  return db.initialise()
+    .then(() => db.streamDonations())
+    .then((cursor) => createObservable(cursor));
+}
+
+module.exports = {
+  all,
+  stream,
+};

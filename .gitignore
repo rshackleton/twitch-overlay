@@ -66,3 +66,4 @@ dist/
 
 # ignore mongdb data volume
 mongodata/
+rethinkdbdata/

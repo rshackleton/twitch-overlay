@@ -23,11 +23,15 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.(jpg|jpeg|png|svg)$/,
+        test: /\.(jpg|jpeg|png)$/,
         use: [
           { loader: 'url-loader', options: { limit: 10000 } },
         ],
-      }
+      },
+      {
+        test: /\.(eot|svg|woff|woff2)$/,
+        use: 'file-loader',
+      },
     ]
   },
   plugins: [
@@ -40,6 +44,9 @@ module.exports = {
         let stats = opts.compiler.getStats().toJson({chunkModules: true});
         return JSON.stringify(stats, null, 2);
       },
+    }),
+    new webpack.DefinePlugin({
+      API_HOST: JSON.stringify(process.env.API_HOST),
     }),
   ],
   resolve: {

@@ -1,12 +1,16 @@
+/* global API_HOST:false */
 import { Observable } from 'rxjs/Observable';
 import { combineEpics } from 'redux-observable';
 
-import { FETCH_DONATION, fetchDonationFulfilled } from 'actions';
+import {
+  FETCH_DONATIONS,
+  fetchDonationsFulfilled,
+} from 'actions';
 
 // api
 const api = {
   fetchDonations: () => {
-    const request = fetch('http://overlay-api.rshackleton.local/donations')
+    const request = fetch(`http://${API_HOST}/donations`)
       .then(res => res.json());
     return Observable.from(request);
   },
@@ -14,10 +18,10 @@ const api = {
 
 // epic
 const fetchDonationEpic = action$ =>
-  action$.ofType(FETCH_DONATION)
+  action$.ofType(FETCH_DONATIONS)
     .mergeMap(() =>
       api.fetchDonations()
-        .map(response => fetchDonationFulfilled(response)),
+        .map(response => fetchDonationsFulfilled(response)),
     );
 
 export default combineEpics(

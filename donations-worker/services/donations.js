@@ -2,8 +2,9 @@ const moment = require('moment');
 const request = require('request-promise-native');
 
 const logger = require('./logger');
-const models = require('../models');
+const db = require('./rethinkdb');
 
+/** Fetch donations from Just Giving API. */
 function fetch() {
   const appId = process.env.JUSTGIVING_APP_ID || '';
   const pageShortName = process.env.JUSTGIVING_PAGE || 'example';
@@ -12,17 +13,18 @@ function fetch() {
 
   logger.info(`Fetching ${donationsUrl}`);
 
-  return request
+  return db.initialise().then(() => request
     .get(donationsUrl, { json: true, headers: { 'x-api-key': appId} })
     .then(data => data.donations)
     .then(donations => donations.map(clean))
     .then(donations => donations.map(save))
-    .catch(function (err) {
+    .catch((err) => {
       logger.error(err.message);
       return err;
-    });
+    }));
 }
 
+/** Clean JSON data. */
 function clean(donation) {
   const cleaned = Object.assign(donation, {
     donationDate: moment(donation.donationDate).toDate(),
@@ -34,32 +36,18 @@ function clean(donation) {
   return cleaned;
 }
 
+/** Insert donation. */
 function save(donation) {
-  // Check for existing donation.
-  return models.Donation.findOne({ externalId: donation.externalId }).then(
-    (doc) => {
-      if (doc) {
-        logger.info(`Donation ${donation.externalId} already exists`);
-        return null;
-      }
+  return db.retrieveDonation(donation.externalId).then(
+    (arr) => {
+      // if (arr && arr.length) {
+      //   logger.info(`Donation ${donation.externalId} already exists`);
+      //   return null;
+      // }
 
-      // Create donation model.
-      var model = new models.Donation(donation);
-
-      // Save to mongodb.
-      return model.save()
-        .then((model) => {
-          logger.info(`Saved donation ${donation.externalId}`);
-          return model;
-        })
-        .catch((err) => {
-          logger.error(err);
-          return err;
-        });
-    },
-    (err) => {
-      logger.error(err);
-      return null;
+      return db.insertDonation(donation).then(
+        () => logger.info(`Saved donation ${donation.externalId}`)
+      );
     }
   );
 }

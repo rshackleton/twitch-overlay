@@ -10,7 +10,7 @@ import rootReducer from './reducers';
 const store = createStore(
   rootReducer,
   applyMiddleware(
-    createLogger(),
+    createLogger({ collapsed: true }),
     createEpicMiddleware(rootEpic),
     routerMiddleware(history),
   ),
