@@ -33,6 +33,12 @@ module.exports = merge.smart(require('./webpack.config'), {
     publicPath: '/',
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('development')
+      },
+      API_HOST: JSON.stringify(process.env.API_HOST),
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
   ],

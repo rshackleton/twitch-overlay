@@ -40,7 +40,28 @@ module.exports = merge.smart(require('./webpack.config'), {
     publicPath: '/',
   },
   plugins: [
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false
+    }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      },
+      API_HOST: JSON.stringify(process.env.API_HOST),
+    }),
     new webpack.optimize.ModuleConcatenationPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      beautify: false,
+      mangle: {
+        screw_ie8: true,
+        keep_fnames: true
+      },
+      compress: {
+        screw_ie8: true
+      },
+      comments: false
+    }),
     new ExtractTextPlugin('[name].[chunkhash].css', { disable: false }),
     new ManifestPlugin(),
     new OfflinePlugin(),
