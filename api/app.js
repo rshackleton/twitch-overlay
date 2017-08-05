@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const cors = require('cors');
 const morgan = require('morgan');
 
 const donations = require('./services/donations');
@@ -11,6 +12,7 @@ const NODE_ENV = process.env.NODE_ENV || 'production';
 const HOST = process.env.HOST || '0.0.0.0';
 const PORT = process.env.VIRTUAL_PORT || 5000;
 
+app.use(cors());
 app.use(morgan('combined', { 'stream': logger.stream }));
 
 app.get('/donations', (req, res) => {

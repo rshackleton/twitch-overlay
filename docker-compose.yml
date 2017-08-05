@@ -55,6 +55,8 @@ services:
     networks:
       - reverse-proxy
       - back
+    links:
+      - mongo
     expose:
       - "${API_PORT}"
     ports:
