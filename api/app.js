@@ -26,6 +26,9 @@ server.listen(PORT, HOST, () => {
 
 io.on('connection', (socket) => {
   logger.debug('connection started');
+  donations.all().then(models => {
+    socket.emit('existing-donations', models);
+  });
   socket.on('disconnect', () => {
     logger.debug('connection ended');
   });
@@ -34,7 +37,7 @@ io.on('connection', (socket) => {
 donations.stream().then(stream => stream.subscribe(
   function next(donation) {
     logger.debug('donation stream: new');
-    io.emit('donation', donation);
+    io.emit('new-donation', donation);
   },
   function error(err) {
     logger.error('donation stream: error');
