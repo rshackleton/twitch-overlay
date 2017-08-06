@@ -28,6 +28,7 @@ services:
       - "VIRTUAL_NETWORK=reverse-proxy"
       - "VIRTUAL_PORT=${WEB_PORT}"
       - "API_HOST=${API_HOST}"
+      - "API_PROTOCOL=${API_PROTOCOL}"
 
   admin:
     restart: always
@@ -49,6 +50,7 @@ services:
       - "VIRTUAL_NETWORK=reverse-proxy"
       - "VIRTUAL_PORT=${ADMIN_PORT}"
       - "API_HOST=${API_HOST}"
+      - "API_PROTOCOL=${API_PROTOCOL}"
 
   api:
     restart: always
