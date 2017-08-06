@@ -65,7 +65,7 @@ module.exports = merge.smart(require('./webpack.config'), {
       comments: false,
     }),
     new ExtractTextPlugin('[name].[chunkhash].css', { disable: false }),
-    new ManifestPlugin(),
+    new ManifestPlugin({ fileName: 'webpack-manifest.json' }),
     new OfflinePlugin(),
   ],
 });

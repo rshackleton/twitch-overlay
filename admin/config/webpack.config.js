@@ -1,6 +1,7 @@
 /* eslint-disable */
 const path = require('path');
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
@@ -36,6 +37,10 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({ template: path.join(root, 'src/index.html') }),
+    new CopyWebpackPlugin([{
+      context: path.join(root, 'src/icons/'),
+      from: '**/*',
+    }]),
     new ScriptExtHtmlWebpackPlugin({
       defaultAttribute: 'defer',
     }),
