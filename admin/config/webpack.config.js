@@ -53,11 +53,13 @@ module.exports = {
   ],
   resolve: {
     alias: {
-      actions: path.join(root, 'src/core/actions'),
       components: path.join(root, 'src/components'),
-      epics: path.join(root, 'src/core/epics'),
       routes: path.join(root, 'src/routes'),
       styles: path.join(root, 'src/styles'),
+      actions: path.join(root, 'src/core/actions'),
+      epics: path.join(root, 'src/core/epics'),
+      middleware: path.join(root, 'src/core/middleware'),
+      reducers: path.join(root, 'src/core/reducers'),
     },
     extensions: ['.js', '.json', '.jsx'],
   },

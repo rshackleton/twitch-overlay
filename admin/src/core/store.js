@@ -3,9 +3,11 @@ import { createEpicMiddleware } from 'redux-observable';
 import { routerMiddleware } from 'react-router-redux';
 import { createLogger } from 'redux-logger';
 
+import rootEpic from 'epics';
+import { scrollMiddleware } from 'middleware';
+import rootReducer from 'reducers';
+
 import history from './history';
-import rootEpic from './epics';
-import rootReducer from './reducers';
 
 const store = createStore(
   rootReducer,
@@ -13,6 +15,7 @@ const store = createStore(
     createLogger({ collapsed: true }),
     createEpicMiddleware(rootEpic),
     routerMiddleware(history),
+    scrollMiddleware,
   ),
 );
 

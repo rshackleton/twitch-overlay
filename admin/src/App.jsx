@@ -9,24 +9,11 @@ import {
   withStyles,
 } from 'material-ui/styles';
 
-import { Donations, Home } from 'routes';
 import { withRoot, Navigation } from 'components';
+import routes from 'routes';
 
 import history from './core/history';
 import store from './core/store';
-
-const routes = [{
-  key: 'root.home',
-  path: '/',
-  exact: true,
-  component: Home,
-  title: 'Home',
-}, {
-  key: 'root.donations',
-  path: '/donations',
-  component: Donations,
-  title: 'Donations',
-}];
 
 const styleSheet = createStyleSheet(theme => ({
   root: {
