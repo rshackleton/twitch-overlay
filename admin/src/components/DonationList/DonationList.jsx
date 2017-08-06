@@ -3,12 +3,9 @@ import PropTypes from 'prop-types';
 import numeral from 'numeral';
 import 'numeral/locales/en-gb';
 
-import {
-  Card,
-  CardContent,
-  Grid,
-  Typography,
-} from 'material-ui';
+import Card, { CardContent } from 'material-ui/Card';
+import Grid from 'material-ui/Grid';
+import Typography from 'material-ui/Typography';
 
 import {
   createStyleSheet,

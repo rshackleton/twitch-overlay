@@ -4,25 +4,19 @@ import { matchPath, withRouter } from 'react-router-dom';
 import { push } from 'react-router-redux';
 import PropTypes from 'prop-types';
 
-import {
-  AppBar,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-  Toolbar,
-  Typography,
-  IconButton,
-} from 'material-ui';
+import AppBar from 'material-ui/AppBar';
+import Drawer from 'material-ui/Drawer';
+import List, { ListItem, ListItemText } from 'material-ui/List';
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
+import IconButton from 'material-ui/IconButton';
 
 import {
   createStyleSheet,
   withStyles,
 } from 'material-ui/styles';
 
-import {
-  Menu as MenuIcon,
-} from 'material-ui-icons';
+import MenuIcon from 'material-ui-icons/Menu';
 
 const styleSheet = createStyleSheet({
   list: {

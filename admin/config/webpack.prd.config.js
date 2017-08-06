@@ -67,5 +67,30 @@ module.exports = merge.smart(require('./webpack.config'), {
     new ExtractTextPlugin('[name].[chunkhash].css', { disable: false }),
     new ManifestPlugin({ fileName: 'webpack-manifest.json' }),
     new OfflinePlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks(module) {
+        return bundleByName(module, [
+          'bower_components',
+          'node_modules',
+          'vendor\/',
+        ]);
+      },
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest',
+      minChunks: Infinity,
+    }),
   ],
 });
+
+/** Check if module name contains the specified names. */
+function bundleByName(module, names) {
+  const userRequest = module.userRequest;
+
+  if (typeof userRequest !== 'string') {
+    return false;
+  }
+
+  return names.some(name => userRequest.indexOf(name) >= 0);
+}

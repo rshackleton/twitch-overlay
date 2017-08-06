@@ -1,5 +1,8 @@
 /* global API_HOST:false, API_PROTOCOL:false */
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/from';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
 import { combineEpics } from 'redux-observable';
 
 import {

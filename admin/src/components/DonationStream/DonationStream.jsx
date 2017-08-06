@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/bufferTime';
+import 'rxjs/add/operator/filter';
 import PropTypes from 'prop-types';
 import io from 'socket.io-client';
 
