@@ -72,8 +72,6 @@ class Navigation extends Component {
               className={classes.menuButton}
               color="contrast"
               aria-label="Menu"
-              aria-owns="simple-menu"
-              aria-haspopup="true"
               onClick={this.openDrawer}
             >
               <MenuIcon />

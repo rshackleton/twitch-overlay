@@ -39,7 +39,8 @@
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",
     "winston": "^2.3.1",
-    "winston-loggly-bulk": "^2.0.0"
+    "winston-loggly-bulk": "^2.0.0",
+    "workbox-sw": "^1.1.0"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
@@ -71,6 +72,7 @@
     "webpack-hot-middleware": "^2.18.2",
     "webpack-manifest-plugin": "^1.2.1",
     "webpack-merge": "^4.1.0",
-    "webpack-stats-plugin": "^0.1.5"
+    "webpack-stats-plugin": "^0.1.5",
+    "workbox-webpack-plugin": "^1.2.0"
   }
 }

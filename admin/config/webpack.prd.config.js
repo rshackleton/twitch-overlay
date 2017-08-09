@@ -2,9 +2,10 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
-const OfflinePlugin = require("offline-plugin");
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 const root = path.join(__dirname, '../');
 
@@ -40,6 +41,9 @@ module.exports = merge.smart(require('./webpack.config'), {
     publicPath: '/',
   },
   plugins: [
+    new CopyWebpackPlugin([
+      { from: require.resolve('workbox-sw'), to: 'workbox-sw.prod.js' },
+    ]),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
       debug: false
@@ -66,7 +70,12 @@ module.exports = merge.smart(require('./webpack.config'), {
     }),
     new ExtractTextPlugin('[name].[chunkhash].css', { disable: false }),
     new ManifestPlugin({ fileName: 'webpack-manifest.json' }),
-    new OfflinePlugin(),
+    new WorkboxPlugin({
+      globDirectory: path.join(root, 'dist'),
+      globPatterns: ['**/*.{html,js,css}'],
+      swSrc: path.join(root, 'src/sw.js'),
+      swDest: path.join(root, 'dist/sw.js'),
+    }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks(module) {

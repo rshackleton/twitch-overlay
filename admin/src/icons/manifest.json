@@ -1,5 +1,5 @@
 {
-  "short_name": "TwitchOverlayAdmin",
+  "short_name": "Twitch Admin",
   "name": "Twitch Overlay: Admin",
   "icons": [
     {
@@ -16,5 +16,5 @@
   "theme_color": "#4b367c",
   "background_color": "#ffffff",
   "display": "standalone",
-  "start_url": "/?utm_source=homescreen"
+  "start_url": "/"
 }
