@@ -1,11 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import App from './App';
+import './core/register-sw';
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js');
-}
+import App from './App';
 
 render(<App />, document.getElementById('root'));
 

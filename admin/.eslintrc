@@ -6,6 +6,7 @@
   "parser": "babel-eslint",
   "rules": {
     "strict": 0,
+    "no-use-before-define": ["error", { "functions": false, "classes": true }],
     "import/extensions": "off",
     "import/no-extraneous-dependencies": "off",
     "import/no-unresolved": "off",

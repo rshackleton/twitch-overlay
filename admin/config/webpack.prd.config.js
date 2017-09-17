@@ -42,7 +42,9 @@ module.exports = merge.smart(require('./webpack.config'), {
   },
   plugins: [
     new CopyWebpackPlugin([
-      { from: require.resolve('workbox-sw'), to: 'workbox-sw.prod.js' },
+      { from: require.resolve('workbox-sw'), to: 'workbox-sw.js' },
+      { from: require.resolve('firebase/firebase-app'), to: 'firebase-app.js' },
+      { from: require.resolve('firebase/firebase-messaging'), to: 'firebase-messaging.js' },
     ]),
     new webpack.LoaderOptionsPlugin({
       minimize: true,

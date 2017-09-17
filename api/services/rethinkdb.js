@@ -5,7 +5,8 @@ const logger = require('./logger');
 const RETHINK_HOST = 'rethinkdb';
 const RETHINK_PORT = 28015;
 const RETHINK_DB_NAME = 'twitch_overlay';
-const RETHINK_TABLE_NAME = 'donations';
+const RETHINK_TABLE_NAME_DONATIONS = 'donations';
+const RETHINK_TABLE_NAME_TOKENS = 'tokens';
 
 // Create initial connection.
 const connection = r.connect({ host: RETHINK_HOST, port: RETHINK_PORT })
@@ -37,7 +38,14 @@ function initialise() {
             // Create table.
             return r
               .db(RETHINK_DB_NAME)
-              .tableCreate(RETHINK_TABLE_NAME)
+              .tableCreate(RETHINK_TABLE_NAME_DONATIONS)
+              .run(conn);
+          })
+          .then(res => {
+            // Create table.
+            return r
+              .db(RETHINK_DB_NAME)
+              .tableCreate(RETHINK_TABLE_NAME_TOKENS)
               .run(conn);
           });
       });
@@ -50,7 +58,7 @@ function streamDonations() {
     .then((conn) => {
       return r
         .db(RETHINK_DB_NAME)
-        .table(RETHINK_TABLE_NAME)
+        .table(RETHINK_TABLE_NAME_DONATIONS)
         .changes()
         .run(conn);
     });
@@ -62,7 +70,7 @@ function retrieveDonation(id) {
     .then((conn) => {
       return r
         .db(RETHINK_DB_NAME)
-        .table(RETHINK_TABLE_NAME)
+        .table(RETHINK_TABLE_NAME_DONATIONS)
         .filter(r.row('externalId').eq(id))
         .limit(1)
         .run(conn)
@@ -78,7 +86,7 @@ function retrieveDonations() {
     .then((conn) => {
       return r
         .db(RETHINK_DB_NAME)
-        .table(RETHINK_TABLE_NAME)
+        .table(RETHINK_TABLE_NAME_DONATIONS)
         .orderBy(r.desc('donationDate'))
         .run(conn)
         .then((cursor) => {
@@ -93,8 +101,20 @@ function insertDonation(donation) {
     .then((conn) => {
       return r
         .db(RETHINK_DB_NAME)
-        .table(RETHINK_TABLE_NAME)
+        .table(RETHINK_TABLE_NAME_DONATIONS)
         .insert(donation)
+        .run(conn);
+    });
+}
+
+/** Insert new token. */
+function insertToken(token) {
+  return connection
+    .then((conn) => {
+      return r
+        .db(RETHINK_DB_NAME)
+        .table(RETHINK_TABLE_NAME_TOKENS)
+        .insert({ token })
         .run(conn);
     });
 }
@@ -102,6 +122,7 @@ function insertDonation(donation) {
 module.exports = {
   initialise,
   insertDonation,
+  insertToken,
   retrieveDonation,
   retrieveDonations,
   streamDonations,
