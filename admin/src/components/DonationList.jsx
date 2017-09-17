@@ -7,21 +7,18 @@ import Card, { CardContent } from 'material-ui/Card';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
 
-import {
-  createStyleSheet,
-  withStyles,
-} from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 
 import spacing from 'material-ui/styles/spacing';
 
-const styleSheet = createStyleSheet({
+const styles = {
   root: {
     padding: spacing.unit,
   },
   card: {
     marginBottom: spacing.unit,
   },
-});
+};
 
 numeral.locale('en-gb');
 
@@ -48,4 +45,4 @@ DonationList.propTypes = {
   donations: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-export default withStyles(styleSheet)(DonationList);
+export default withStyles(styles)(DonationList);

@@ -11,14 +11,11 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 
-import {
-  createStyleSheet,
-  withStyles,
-} from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 
 import MenuIcon from 'material-ui-icons/Menu';
 
-const styleSheet = createStyleSheet({
+const styles = {
   list: {
     minWidth: 250,
   },
@@ -29,7 +26,7 @@ const styleSheet = createStyleSheet({
   menuButton: {
     marginRight: 20,
   },
-});
+};
 
 class Navigation extends Component {
   static propTypes = {
@@ -108,6 +105,6 @@ const mapDispatchToProps = dispatch => ({
   redirectTo: path => dispatch(push(path)),
 });
 
-const StyledNavigation = withStyles(styleSheet)(Navigation);
+const StyledNavigation = withStyles(styles)(Navigation);
 const ConnectedNavigation = connect(mapStateToProps, mapDispatchToProps)(StyledNavigation);
 export default withRouter(ConnectedNavigation);

@@ -4,10 +4,7 @@ import { Route } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux';
 import PropTypes from 'prop-types';
 
-import {
-  createStyleSheet,
-  withStyles,
-} from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 
 import { withRoot, Navigation } from 'components';
 import routes from 'routes';
@@ -15,14 +12,14 @@ import routes from 'routes';
 import history from './core/history';
 import store from './core/store';
 
-const styleSheet = createStyleSheet(theme => ({
+const styles = theme => ({
   root: {
     marginTop: 56,
     [theme.breakpoints.up('sm')]: {
       marginTop: 64,
     },
   },
-}));
+});
 
 const App = ({ classes }) => (
   <Provider store={store}>
@@ -41,5 +38,5 @@ App.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const StyledApp = withStyles(styleSheet)(App);
+const StyledApp = withStyles(styles)(App);
 export default withRoot(StyledApp);

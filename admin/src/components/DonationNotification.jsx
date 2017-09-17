@@ -7,7 +7,7 @@ import Snackbar from 'material-ui/Snackbar';
 const DonationNotification = ({ newCount, refresh }) => {
   const action = (
     <Button
-      color="accent"
+      color="secondary"
       dense
       onClick={refresh}
     >

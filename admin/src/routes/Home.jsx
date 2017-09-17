@@ -5,19 +5,16 @@ import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
 
-import {
-  createStyleSheet,
-  withStyles,
-} from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 
-const styleSheet = createStyleSheet({
+const styles = {
   root: {
     padding: 8,
   },
   paper: {
     padding: 24,
   },
-});
+};
 
 const Home = ({ classes }) => (
   <div className={classes.root}>
@@ -37,4 +34,4 @@ Home.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styleSheet)(Home);
+export default withStyles(styles)(Home);

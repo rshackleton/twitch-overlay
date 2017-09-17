@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { JssProvider } from 'react-jss';
-import { withStyles, createStyleSheet, MuiThemeProvider } from 'material-ui/styles';
-import createContext from '../styles/createContext';
+import { withStyles, MuiThemeProvider } from 'material-ui/styles';
+import getContext from '../styles/getContext';
 
-const styleSheet = createStyleSheet(theme => ({
+const styles = theme => ({
   '@global': {
     html: {
       background: theme.palette.background.default,
@@ -16,15 +15,25 @@ const styleSheet = createStyleSheet(theme => ({
       fontFamily: '\'Roboto\', sans-serif',
     },
   },
-}));
+});
 
 let AppWrapper = props => props.children;
-AppWrapper = withStyles(styleSheet)(AppWrapper);
-
-const context = createContext();
+AppWrapper = withStyles(styles)(AppWrapper);
 
 function withRoot(BaseComponent) {
   class WithRoot extends Component {
+    static getInitialProps(ctx) {
+      if (BaseComponent.getInitialProps) {
+        return BaseComponent.getInitialProps(ctx);
+      }
+
+      return {};
+    }
+
+    componentWillMount() {
+      this.styleContext = getContext();
+    }
+
     componentDidMount() {
       // Remove the server-side injected CSS.
       const jssStyles = document.querySelector('#jss-server-side');
@@ -35,13 +44,14 @@ function withRoot(BaseComponent) {
 
     render() {
       return (
-        <JssProvider registry={context.sheetsRegistry} jss={context.jss}>
-          <MuiThemeProvider theme={context.theme} sheetsManager={context.sheetsManager}>
-            <AppWrapper>
-              <BaseComponent />
-            </AppWrapper>
-          </MuiThemeProvider>
-        </JssProvider>
+        <MuiThemeProvider
+          theme={this.styleContext.theme}
+          sheetsManager={this.styleContext.sheetsManager}
+        >
+          <AppWrapper>
+            <BaseComponent {...this.props} />
+          </AppWrapper>
+        </MuiThemeProvider>
       );
     }
   }
