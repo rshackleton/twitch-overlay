@@ -4,12 +4,20 @@ const logger = require('./logger');
 
 const RETHINK_HOST = 'rethinkdb';
 const RETHINK_PORT = 28015;
+const RETHINK_PASSWORD = process.env.RETHINK_PASSWORD;
 const RETHINK_DB_NAME = 'twitch_overlay';
 const RETHINK_TABLE_NAME_DONATIONS = 'donations';
 const RETHINK_TABLE_NAME_TOKENS = 'tokens';
 
 // Create initial connection.
-const connection = r.connect({ host: RETHINK_HOST, port: RETHINK_PORT })
+const connectionOptions = {
+  host: RETHINK_HOST,
+  port: RETHINK_PORT,
+  user: 'admin',
+  password: RETHINK_PASSWORD,
+};
+
+const connection = r.connect(connectionOptions)
   .then(conn => {
     logger.debug(`Connected to ${RETHINK_HOST}:${RETHINK_PORT}`);
     return conn;

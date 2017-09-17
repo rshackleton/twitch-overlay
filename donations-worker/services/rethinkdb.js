@@ -4,11 +4,20 @@ const logger = require('./logger');
 
 const RETHINK_HOST = 'rethinkdb';
 const RETHINK_PORT = 28015;
+const RETHINK_PASSWORD = process.env.RETHINK_PASSWORD;
 const RETHINK_DB_NAME = 'twitch_overlay';
-const RETHINK_TABLE_NAME = 'donations';
+const RETHINK_TABLE_NAME_DONATIONS = 'donations';
+const RETHINK_TABLE_NAME_TOKENS = 'tokens';
 
 // Create initial connection.
-const connection = r.connect({ host: RETHINK_HOST, port: RETHINK_PORT })
+const connectionOptions = {
+  host: RETHINK_HOST,
+  port: RETHINK_PORT,
+  user: 'admin',
+  password: RETHINK_PASSWORD,
+};
+
+const connection = r.connect(connectionOptions)
   .then(conn => {
     logger.debug(`Connected to ${RETHINK_HOST}:${RETHINK_PORT}`);
     return conn;
@@ -37,7 +46,14 @@ function initialise() {
             // Create table.
             return r
               .db(RETHINK_DB_NAME)
-              .tableCreate(RETHINK_TABLE_NAME)
+              .tableCreate(RETHINK_TABLE_NAME_DONATIONS)
+              .run(conn);
+          })
+          .then(res => {
+            // Create table.
+            return r
+              .db(RETHINK_DB_NAME)
+              .tableCreate(RETHINK_TABLE_NAME_TOKENS)
               .run(conn);
           });
       });
@@ -52,7 +68,7 @@ function retrieveDonation(id) {
       // Insert new item into table.
       return r
         .db(RETHINK_DB_NAME)
-        .table(RETHINK_TABLE_NAME)
+        .table(RETHINK_TABLE_NAME_DONATIONS)
         .filter(r.row('externalId').eq(id))
         .limit(1)
         .run(conn)
@@ -71,7 +87,7 @@ function insertDonation(donation) {
       // Insert new item into table.
       return r
         .db(RETHINK_DB_NAME)
-        .table(RETHINK_TABLE_NAME)
+        .table(RETHINK_TABLE_NAME_DONATIONS)
         .insert(donation)
         .run(conn);
     });

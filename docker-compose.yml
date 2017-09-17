@@ -71,6 +71,7 @@ services:
       - "LETSENCRYPT_HOST=${API_HOST}"
       - "LOGGLY_TOKEN=${LOGGLY_TOKEN}"
       - "LOGGLY_SUBDOMAIN=${LOGGLY_SUBDOMAIN}"
+      - "RETHINK_PASSWORD=${DB_PASSWORD}"
       - "VIRTUAL_HOST=${API_HOST}"
       - "VIRTUAL_NETWORK=reverse-proxy"
       - "VIRTUAL_PORT=${API_PORT}"
@@ -89,6 +90,7 @@ services:
       - "LOGGLY_TOKEN=${LOGGLY_TOKEN}"
       - "LOGGLY_SUBDOMAIN=${LOGGLY_SUBDOMAIN}"
       - "POLL_INTERVAL=${POLL_INTERVAL}"
+      - "RETHINK_PASSWORD=${DB_PASSWORD}"
 
   rethinkdb:
     restart: always
@@ -99,3 +101,4 @@ services:
       - "8080:8080"
       - "28015:28015"
       - "29015:29015"
+    command: ["rethinkdb", "--bind", "all", "--initial-password", "${DB_PASSWORD}"]
