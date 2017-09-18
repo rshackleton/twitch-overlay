@@ -1,7 +1,6 @@
 /* eslint-disable */
 const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const StatsWriterPlugin = require('webpack-stats-plugin').StatsWriterPlugin;
@@ -32,7 +31,7 @@ module.exports = {
         test: /\.(eot|svg|woff|woff2)$/,
         use: 'file-loader',
       },
-    ]
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({ template: path.join(root, 'src/index.html') }),
@@ -45,13 +44,16 @@ module.exports = {
         return JSON.stringify(stats, null, 2);
       },
     }),
-    new webpack.DefinePlugin({
-      API_HOST: JSON.stringify(process.env.API_HOST),
-    }),
   ],
   resolve: {
     alias: {
-      img: path.join(root, 'src/img'),
+      components: path.join(root, 'src/components'),
+      routes: path.join(root, 'src/routes'),
+      styles: path.join(root, 'src/styles'),
+      actions: path.join(root, 'src/core/actions'),
+      epics: path.join(root, 'src/core/epics'),
+      middleware: path.join(root, 'src/core/middleware'),
+      reducers: path.join(root, 'src/core/reducers'),
     },
     extensions: ['.js', '.json', '.jsx'],
   },

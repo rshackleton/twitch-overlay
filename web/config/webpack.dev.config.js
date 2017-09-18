@@ -2,7 +2,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const root = path.join(__dirname, '../');
 
@@ -30,9 +29,16 @@ module.exports = merge.smart(require('./webpack.config'), {
   output: {
     filename: '[name].[hash].js',
     path: path.join(root, 'dist'),
-    publicPath: '',
+    publicPath: '/',
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('development')
+      },
+      API_HOST: JSON.stringify(process.env.API_HOST),
+      API_PROTOCOL: JSON.stringify(process.env.API_PROTOCOL),
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
   ],

@@ -1,16 +1,22 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import * as OfflinePluginRuntime from 'offline-plugin/runtime';
+import { render } from 'react-dom';
+import { css } from 'glamor';
+import 'glamor/reset';
 
-import './index.css';
 import App from './App';
 
-OfflinePluginRuntime.install();
+css.global('html', {
+  boxSizing: 'border-box',
+});
 
-ReactDOM.render(<App />, document.getElementById('root'));
+css.global('*, *:before, *:after', {
+  boxSizing: 'inherit',
+});
+
+render(<App />, document.getElementById('root'));
 
 if (module.hot) {
   module.hot.accept('./App', () => {
-    ReactDOM.render(<App />, document.getElementById('root'));
+    render(<App />, document.getElementById('root'));
   });
 }

@@ -3,38 +3,37 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "cross-env NODE_ENV=production nodemon app.js -L",
+    "start": "yarn build && yarn start:prd",
+    "start:prd": "cross-env NODE_ENV=production nodemon app.js -L",
     "start:dev": "cross-env NODE_ENV=development nodemon app.js -L",
-    "build": "cross-env NODE_ENV=production webpack -p --config config/webpack.prd.config.js"
-  },
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
-  },
-  "eslintConfig": {
-    "extends": "airbnb",
-    "env": {
-      "browser": true
-    },
-    "settings": {
-      "import/resolver": {
-        "webpack": {
-          "config": "config/webpack.config.js"
-        }
-      }
-    }
+    "build": "cross-env NODE_ENV=production webpack --config config/webpack.prd.config.js"
   },
   "dependencies": {
     "babel-polyfill": "^6.23.0",
+    "dotenv": "^4.0.0",
     "express": "^4.15.3",
     "express-winston": "^2.4.0",
+    "glamor": "^2.20.40",
+    "glamorous": "^4.9.1",
+    "history": "^4.7.2",
     "isomorphic-fetch": "^2.2.1",
+    "lodash": "^4.17.4",
     "morgan": "^1.8.2",
     "nodemon": "^1.11.0",
+    "numeral": "^2.0.6",
     "offline-plugin": "^4.8.3",
+    "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
+    "react-router-redux": "next",
+    "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
+    "redux-observable": "^0.16.0",
+    "rxjs": "^5.4.3",
+    "socket.io": "^2.0.3",
+    "socket.io-client": "^2.0.3",
     "winston": "^2.3.1",
     "winston-loggly-bulk": "^2.0.0"
   },

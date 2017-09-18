@@ -10,6 +10,4 @@ WORKDIR /opt/app
 
 COPY . /opt/app
 
-RUN yarn run build
-
 CMD ["yarn", "start"]
