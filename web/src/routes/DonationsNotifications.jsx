@@ -1,52 +1,30 @@
 import React from 'react';
-import glamorous from 'glamorous';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-const width = (460 - (6 * 2));
-const height = (111 - (6 * 2));
+import { DonationWithMessage } from 'components';
 
-const Widget = glamorous.div({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'flex-start',
-  justifyContent: 'center',
-  width,
-  height,
-  padding: '8px',
-  background: '#323232',
-  fontFamily: '\'Press Start 2P\', cursive',
-});
-
-const Heading = glamorous.h1({
-  color: '#00DFFF',
-  fontSize: '12px',
-  fontWeight: 'normal',
-  lineHeight: '14px',
-  margin: '0 0 16px',
-  padding: '0',
-  textTransform: 'uppercase',
-  verticalAlign: 'middle',
-});
-
-const Message = glamorous.p({
-  color: '#FFFF65',
-  fontSize: '16px',
-  fontWeight: 'normal',
-  lineHeight: '22px',
-  margin: '0',
-  padding: '0',
-  textTransform: 'uppercase',
-  verticalAlign: 'middle',
-});
-
-const Symbol = glamorous.span({
-  marginRight: '4px',
-});
-
-const DonationsNotifications = () => (
-  <Widget>
-    <Heading>Top donation!</Heading>
-    <Message>Richard Shackleton: <Symbol>£</Symbol>20.00</Message>
-  </Widget>
+const DonationsNotifications = ({ topDonation }) => (
+  topDonation ?
+    <DonationWithMessage
+      title="Top Donation"
+      donation={topDonation}
+    /> : null
 );
 
-export default DonationsNotifications;
+DonationsNotifications.defaultProps = {
+  topDonation: null,
+};
+
+DonationsNotifications.propTypes = {
+  topDonation: PropTypes.shape({
+    amount: PropTypes.number.isRequired,
+    donorDisplayName: PropTypes.string.isRequired,
+  }),
+};
+
+const mapStateToProps = state => ({
+  topDonation: state.donations.top,
+});
+
+export default connect(mapStateToProps)(DonationsNotifications);
