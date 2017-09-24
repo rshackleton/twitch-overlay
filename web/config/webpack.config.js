@@ -31,6 +31,10 @@ module.exports = {
         test: /\.(eot|svg|woff|woff2)$/,
         use: 'file-loader',
       },
+      {
+        test: /\.(mp3)$/,
+        use: 'file-loader',
+      },
     ],
   },
   plugins: [

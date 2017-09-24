@@ -65,7 +65,7 @@ function getSpeed(donation) {
 const DonationWithMessage = ({ title, donation }) => (
   <Widget>
     <Heading>{title}</Heading>
-    <Marquee height="22px" speed={getSpeed(donation)}>
+    <Marquee delay="0.5s" height="22px" speed={getSpeed(donation)}>
       <Message>
         {donation.donorDisplayName}
         <Separator>&mdash;</Separator>

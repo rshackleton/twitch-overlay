@@ -16,12 +16,13 @@ const MarqueeContainer = glamorous.div(({ height }) => ({
   overflow: 'hidden',
 }));
 
-const MarqueeInner = glamorous.div(({ speed }) => ({
+const MarqueeInner = glamorous.div(({ delay, speed }) => ({
   display: 'block',
   position: 'absolute',
   height: '100%',
   whiteSpace: 'nowrap',
   animation: `${animation} ${speed} linear infinite`,
+  animationDelay: delay,
 }));
 
 const MarqueeItem = glamorous.div({
@@ -30,17 +31,22 @@ const MarqueeItem = glamorous.div({
   whiteSpace: 'nowrap',
 });
 
-const Marquee = ({ children, height, speed }) => (
+const Marquee = ({ children, delay, height, speed }) => (
   <MarqueeContainer height={height}>
-    <MarqueeInner speed={speed}>
+    <MarqueeInner delay={delay} speed={speed}>
       <MarqueeItem>{children}</MarqueeItem>
       <MarqueeItem>{children}</MarqueeItem>
     </MarqueeInner>
   </MarqueeContainer>
 );
 
+Marquee.defaultProps = {
+  delay: '0s',
+};
+
 Marquee.propTypes = {
   children: PropTypes.element.isRequired,
+  delay: PropTypes.string,
   height: PropTypes.string.isRequired,
   speed: PropTypes.string.isRequired,
 };
