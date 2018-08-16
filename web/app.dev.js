@@ -1,13 +1,13 @@
 /* eslint-disable */
-const path = require('path');
-const express = require('express');
-const morgan = require('morgan');
-const webpack = require('webpack');
-const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
+import path from 'path';
+import express from 'express';
+import morgan from 'morgan';
+import webpack from 'webpack';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
 
-const logger = require('./services/logger');
-const config = require('./config/webpack.dev.config');
+import logger from './services/logger';
+import config from './config/webpack.dev.config';
 
 const compiler = webpack(config);
 
@@ -18,7 +18,7 @@ const devMiddleware = webpackDevMiddleware(compiler, {
   noInfo: true,
   publicPath: config.output.publicPath,
   stats: {
-    colors: true
+    colors: true,
   },
   watchOptions: {
     poll: true,
@@ -29,7 +29,15 @@ const hotMiddleware = webpackHotMiddleware(compiler);
 
 app.use(devMiddleware);
 app.use(hotMiddleware);
-app.use(morgan('combined', { 'stream': logger.stream }));
+app.use(
+  morgan('combined', {
+    stream: {
+      write: function(message) {
+        logger.info(message);
+      },
+    },
+  }),
+);
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.get('*', (req, res) => {
@@ -39,7 +47,7 @@ app.get('*', (req, res) => {
       if (err) {
         return next(err);
       }
-      res.set('content-type','text/html');
+      res.set('content-type', 'text/html');
       res.send(result);
       res.end();
     });
