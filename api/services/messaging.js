@@ -5,7 +5,7 @@ import logger from './logger';
 
 const topicName = 'donations';
 
-async function storeToken(token) {
+export async function storeToken(token) {
   try {
     return await db
       .collection('messaging-tokens')
@@ -17,7 +17,7 @@ async function storeToken(token) {
   }
 }
 
-function subscribe(token) {
+export function subscribe(token) {
   const authKey = process.env.FIREBASE__MESSAGING_SERVERKEY;
   const url = `https://iid.googleapis.com/iid/v1/${token}/rel/topics/${topicName}`;
 
@@ -40,7 +40,7 @@ function subscribe(token) {
     });
 }
 
-function send(donation) {
+export function send(donation) {
   const authKey = process.env.FIREBASE__MESSAGING_SERVERKEY;
   const url = 'https://fcm.googleapis.com/fcm/send';
 
@@ -70,9 +70,3 @@ function send(donation) {
       return false;
     });
 }
-
-module.exports = {
-  send,
-  storeToken,
-  subscribe,
-};

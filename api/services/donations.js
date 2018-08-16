@@ -5,7 +5,7 @@ import db from './db';
 import logger from './logger';
 
 /** Get all donations, most recent first. */
-async function all() {
+export async function all() {
   try {
     return await db
       .collection('donations')
@@ -18,7 +18,7 @@ async function all() {
 }
 
 /** Create test donation. */
-async function insertTest() {
+export async function insertTest() {
   try {
     const amount = faker.finance.amount();
 
@@ -50,7 +50,7 @@ async function insertTest() {
 }
 
 /** Create observable from firestore subscription. */
-function stream() {
+export function stream() {
   try {
     const observable = Rx.Observable.create(observer => {
       db.collection('donations').onSnapshot(
@@ -69,9 +69,3 @@ function stream() {
     logger.error(error);
   }
 }
-
-module.exports = {
-  all,
-  insertTest,
-  stream,
-};
