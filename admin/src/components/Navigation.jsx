@@ -35,15 +35,15 @@ class Navigation extends Component {
       title: PropTypes.string.isRequired,
     }).isRequired,
     redirectTo: PropTypes.func.isRequired,
-  }
+  };
 
   state = {
     open: false,
-  }
+  };
 
   openDrawer = () => {
     this.setState({ open: true });
-  }
+  };
 
   closeDrawer = () => {
     this.setState({ open: false });
@@ -106,5 +106,8 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const StyledNavigation = withStyles(styles)(Navigation);
-const ConnectedNavigation = connect(mapStateToProps, mapDispatchToProps)(StyledNavigation);
+const ConnectedNavigation = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(StyledNavigation);
 export default withRouter(ConnectedNavigation);

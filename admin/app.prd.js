@@ -1,13 +1,21 @@
 /* eslint-disable */
-const path = require('path');
-const express = require('express');
-const morgan = require('morgan');
+import path from 'path';
+import express from 'express';
+import morgan from 'morgan';
 
-const logger = require('./services/logger');
+import logger from './services/logger';
 
 const app = express();
 
-app.use(morgan('combined', { 'stream': logger.stream }));
+app.use(
+  morgan('combined', {
+    stream: {
+      write: function(message) {
+        logger.info(message);
+      },
+    },
+  }),
+);
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.get('*', (req, res) => {

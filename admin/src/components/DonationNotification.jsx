@@ -6,11 +6,7 @@ import Snackbar from 'material-ui/Snackbar';
 
 const DonationNotification = ({ newCount, refresh }) => {
   const action = (
-    <Button
-      color="secondary"
-      dense
-      onClick={refresh}
-    >
+    <Button color="secondary" dense onClick={refresh}>
       Refresh
     </Button>
   );
