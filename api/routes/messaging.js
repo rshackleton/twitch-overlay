@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { storeToken, subscribe } from '../services/messaging';
 
 const router = new Router();
 
@@ -7,11 +8,9 @@ router.post('/token', (req, res) => {
   try {
     const token = req.body.token;
 
-    return messaging
-      .storeToken(token)
+    return storeToken(token)
       .then(() => {
-        return messaging
-          .subscribe(token)
+        return subscribe(token)
           .then(result => {
             return res.json(result);
           })

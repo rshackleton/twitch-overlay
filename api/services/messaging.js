@@ -18,7 +18,7 @@ export async function storeToken(token) {
 }
 
 export function subscribe(token) {
-  const authKey = process.env.FIREBASE__MESSAGING_SERVERKEY;
+  const authKey = process.env.FIREBASE_MESSAGING_SERVERKEY;
   const url = `https://iid.googleapis.com/iid/v1/${token}/rel/topics/${topicName}`;
 
   const config = {
@@ -41,7 +41,7 @@ export function subscribe(token) {
 }
 
 export function send(donation) {
-  const authKey = process.env.FIREBASE__MESSAGING_SERVERKEY;
+  const authKey = process.env.FIREBASE_MESSAGING_SERVERKEY;
   const url = 'https://fcm.googleapis.com/fcm/send';
 
   const data = {
@@ -62,7 +62,7 @@ export function send(donation) {
   return request
     .post(config)
     .then(res => {
-      logger.debug(res);
+      logger.info(res);
       return true;
     })
     .catch(err => {

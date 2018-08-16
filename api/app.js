@@ -9,7 +9,7 @@ import { createServer } from 'http';
 import socketIO from 'socket.io';
 
 import { all, stream as _stream } from './services/donations';
-import messaging from './services/messaging';
+import { send } from './services/messaging';
 import routes from './routes';
 
 // Create express app.
@@ -71,7 +71,7 @@ _stream().subscribe(
       logger.info(`donation stream: new ${donation.externalId}`);
 
       // Send push notification.
-      // messaging.send(donation);
+      send(donation);
 
       // Send update to all connected clients.
       io.emit('new-donation', donation);
