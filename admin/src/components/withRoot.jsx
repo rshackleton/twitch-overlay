@@ -12,7 +12,7 @@ const styles = theme => ({
     body: {
       margin: 0,
       padding: 0,
-      fontFamily: '\'Roboto\', sans-serif',
+      fontFamily: "'Roboto', sans-serif",
     },
   },
 });

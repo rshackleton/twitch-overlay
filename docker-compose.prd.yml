@@ -1,6 +1,0 @@
-version: "2"
-
-services:
-  rethinkdb:
-    volumes:
-      - "./rethinkdbdata:/data"

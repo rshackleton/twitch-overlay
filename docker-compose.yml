@@ -1,4 +1,4 @@
-version: "2"
+version: '2'
 
 networks:
   reverse-proxy:
@@ -16,19 +16,19 @@ services:
       - reverse-proxy
       - back
     expose:
-      - "${WEB_PORT}"
+      - '${WEB_PORT}'
     ports:
-      - "${WEB_PORT}:${WEB_PORT}"
+      - '${WEB_PORT}:${WEB_PORT}'
     environment:
-      - "API_HOST=${API_HOST}"
-      - "API_PROTOCOL=${API_PROTOCOL}"
-      - "LETSENCRYPT_EMAIL=${EMAIL_ADDRESS}"
-      - "LETSENCRYPT_HOST=${WEB_HOST}"
-      - "LOGGLY_TOKEN=${LOGGLY_TOKEN}"
-      - "LOGGLY_SUBDOMAIN=${LOGGLY_SUBDOMAIN}"
-      - "VIRTUAL_HOST=${WEB_HOST}"
-      - "VIRTUAL_NETWORK=reverse-proxy"
-      - "VIRTUAL_PORT=${WEB_PORT}"
+      - 'API_HOST=${API_HOST}'
+      - 'API_PROTOCOL=${API_PROTOCOL}'
+      - 'LETSENCRYPT_EMAIL=${EMAIL_ADDRESS}'
+      - 'LETSENCRYPT_HOST=${WEB_HOST}'
+      - 'LOGGLY_TOKEN=${LOGGLY_TOKEN}'
+      - 'LOGGLY_SUBDOMAIN=${LOGGLY_SUBDOMAIN}'
+      - 'VIRTUAL_HOST=${WEB_HOST}'
+      - 'VIRTUAL_NETWORK=reverse-proxy'
+      - 'VIRTUAL_PORT=${WEB_PORT}'
 
   admin:
     restart: always
@@ -38,19 +38,19 @@ services:
       - reverse-proxy
       - back
     expose:
-      - "${ADMIN_PORT}"
+      - '${ADMIN_PORT}'
     ports:
-      - "${ADMIN_PORT}:${ADMIN_PORT}"
+      - '${ADMIN_PORT}:${ADMIN_PORT}'
     environment:
-      - "API_HOST=${API_HOST}"
-      - "API_PROTOCOL=${API_PROTOCOL}"
-      - "LETSENCRYPT_EMAIL=${EMAIL_ADDRESS}"
-      - "LETSENCRYPT_HOST=${ADMIN_HOST}"
-      - "LOGGLY_TOKEN=${LOGGLY_TOKEN}"
-      - "LOGGLY_SUBDOMAIN=${LOGGLY_SUBDOMAIN}"
-      - "VIRTUAL_HOST=${ADMIN_HOST}"
-      - "VIRTUAL_NETWORK=reverse-proxy"
-      - "VIRTUAL_PORT=${ADMIN_PORT}"
+      - 'API_HOST=${API_HOST}'
+      - 'API_PROTOCOL=${API_PROTOCOL}'
+      - 'LETSENCRYPT_EMAIL=${EMAIL_ADDRESS}'
+      - 'LETSENCRYPT_HOST=${ADMIN_HOST}'
+      - 'LOGGLY_TOKEN=${LOGGLY_TOKEN}'
+      - 'LOGGLY_SUBDOMAIN=${LOGGLY_SUBDOMAIN}'
+      - 'VIRTUAL_HOST=${ADMIN_HOST}'
+      - 'VIRTUAL_NETWORK=reverse-proxy'
+      - 'VIRTUAL_PORT=${ADMIN_PORT}'
 
   api:
     restart: always
@@ -59,22 +59,22 @@ services:
     networks:
       - reverse-proxy
       - back
-    links:
-      - rethinkdb
     expose:
-      - "${API_PORT}"
+      - '${API_PORT}'
     ports:
-      - "${API_PORT}:${API_PORT}"
+      - '${API_PORT}:${API_PORT}'
     environment:
-      - "FIREBASE__MESSAGING_SERVERKEY=${FIREBASE__MESSAGING_SERVERKEY}"
-      - "LETSENCRYPT_EMAIL=${EMAIL_ADDRESS}"
-      - "LETSENCRYPT_HOST=${API_HOST}"
-      - "LOGGLY_TOKEN=${LOGGLY_TOKEN}"
-      - "LOGGLY_SUBDOMAIN=${LOGGLY_SUBDOMAIN}"
-      - "RETHINK_PASSWORD=${DB_PASSWORD}"
-      - "VIRTUAL_HOST=${API_HOST}"
-      - "VIRTUAL_NETWORK=reverse-proxy"
-      - "VIRTUAL_PORT=${API_PORT}"
+      - 'FIREBASE_APIKEY=${FIREBASE_APIKEY}'
+      - 'FIREBASE_AUTHDOMAIN=${FIREBASE_AUTHDOMAIN}'
+      - 'FIREBASE_MESSAGING_SERVERKEY=${FIREBASE_MESSAGING_SERVERKEY}'
+      - 'FIREBASE_PROJECTID=${FIREBASE_PROJECTID}'
+      - 'LETSENCRYPT_EMAIL=${EMAIL_ADDRESS}'
+      - 'LETSENCRYPT_HOST=${API_HOST}'
+      - 'LOGGLY_TOKEN=${LOGGLY_TOKEN}'
+      - 'LOGGLY_SUBDOMAIN=${LOGGLY_SUBDOMAIN}'
+      - 'VIRTUAL_HOST=${API_HOST}'
+      - 'VIRTUAL_NETWORK=reverse-proxy'
+      - 'VIRTUAL_PORT=${API_PORT}'
 
   donations-worker:
     restart: always
@@ -82,23 +82,12 @@ services:
     image: donations-worker
     networks:
       - back
-    links:
-      - rethinkdb
     environment:
-      - "JUSTGIVING_APP_ID=${JUSTGIVING_APP_ID}"
-      - "JUSTGIVING_PAGE=${JUSTGIVING_PAGE}"
-      - "LOGGLY_TOKEN=${LOGGLY_TOKEN}"
-      - "LOGGLY_SUBDOMAIN=${LOGGLY_SUBDOMAIN}"
-      - "POLL_INTERVAL=${POLL_INTERVAL}"
-      - "RETHINK_PASSWORD=${DB_PASSWORD}"
-
-  rethinkdb:
-    restart: always
-    image: rethinkdb
-    networks:
-      - back
-    ports:
-      - "8080:8080"
-      - "28015:28015"
-      - "29015:29015"
-    command: ["rethinkdb", "--bind", "all", "--initial-password", "${DB_PASSWORD}"]
+      - 'FIREBASE_APIKEY=${FIREBASE_APIKEY}'
+      - 'FIREBASE_AUTHDOMAIN=${FIREBASE_AUTHDOMAIN}'
+      - 'FIREBASE_PROJECTID=${FIREBASE_PROJECTID}'
+      - 'JUSTGIVING_APP_ID=${JUSTGIVING_APP_ID}'
+      - 'JUSTGIVING_PAGE=${JUSTGIVING_PAGE}'
+      - 'LOGGLY_TOKEN=${LOGGLY_TOKEN}'
+      - 'LOGGLY_SUBDOMAIN=${LOGGLY_SUBDOMAIN}'
+      - 'POLL_INTERVAL=${POLL_INTERVAL}'

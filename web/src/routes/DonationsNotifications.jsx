@@ -8,10 +8,7 @@ import { DonationWithMessage } from 'components';
 import audioFairground from '../audio/fairground.mp3';
 import audioWow from '../audio/wow.mp3';
 
-const notifications = [
-  { min: 20, src: audioFairground },
-  { min: 0, src: audioWow },
-];
+const notifications = [{ min: 20, src: audioFairground }, { min: 0, src: audioWow }];
 
 const donationShape = PropTypes.shape({
   amount: PropTypes.number.isRequired,
@@ -22,11 +19,11 @@ class DonationsNotifications extends Component {
   static propTypes = {
     newDonation: donationShape,
     topDonation: donationShape,
-  }
+  };
   static defaultProps = {
     newDonation: null,
     topDonation: null,
-  }
+  };
   componentDidUpdate(prevProps) {
     const { newDonation } = this.props;
     const { oldDonation } = prevProps;
@@ -63,7 +60,11 @@ class DonationsNotifications extends Component {
   render() {
     return (
       <div>
-        <audio ref={(c) => { this.audio = c; }} />
+        <audio
+          ref={(c) => {
+            this.audio = c;
+          }}
+        />
         {this.renderDonation()}
       </div>
     );

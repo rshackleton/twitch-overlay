@@ -6,8 +6,8 @@ import 'numeral/locales/en-gb';
 
 import { Marquee } from 'components';
 
-const width = (460 - (6 * 2));
-const height = (111 - (6 * 2));
+const width = 460 - 6 * 2;
+const height = 111 - 6 * 2;
 
 const Widget = glamorous.div({
   display: 'flex',
@@ -18,7 +18,7 @@ const Widget = glamorous.div({
   height,
   padding: '8px',
   background: '#323232',
-  fontFamily: '\'Press Start 2P\', cursive',
+  fontFamily: "'Press Start 2P', cursive",
   overflow: 'hidden',
 });
 
@@ -69,7 +69,8 @@ const DonationWithMessage = ({ title, donation }) => (
       <Message>
         {donation.donorDisplayName}
         <Separator>&mdash;</Separator>
-        <Symbol>£</Symbol>{numeral(donation.amount).format('0.00')}
+        <Symbol>£</Symbol>
+        {numeral(donation.amount).format('0.00')}
         <Separator>&mdash;</Separator>
         {donation.message}
       </Message>
