@@ -2,7 +2,6 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 const root = path.join(__dirname, '../');
 
@@ -38,15 +37,6 @@ module.exports = {
         from: '**/*',
       },
     ]),
-    // new ScriptExtHtmlWebpackPlugin({
-    //   defaultAttribute: 'defer',
-    // }),
-    // new StatsWriterPlugin({
-    //   transform: function(data, opts) {
-    //     let stats = opts.compiler.getStats().toJson({ chunkModules: true });
-    //     return JSON.stringify(stats, null, 2);
-    //   },
-    // }),
   ],
   resolve: {
     alias: {
