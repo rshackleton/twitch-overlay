@@ -1,11 +1,8 @@
 /* eslint-disable */
 const path = require('path');
-const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
-const StatsWriterPlugin = require('webpack-stats-plugin').StatsWriterPlugin;
+// const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 const root = path.join(__dirname, '../');
 
@@ -25,9 +22,7 @@ module.exports = {
       },
       {
         test: /\.(jpg|jpeg|png)$/,
-        use: [
-          { loader: 'url-loader', options: { limit: 10000 } },
-        ],
+        use: [{ loader: 'url-loader', options: { limit: 10000 } }],
       },
       {
         test: /\.(eot|svg|woff|woff2)$/,
@@ -37,19 +32,21 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({ template: path.join(root, 'src/index.html') }),
-    new CopyWebpackPlugin([{
-      context: path.join(root, 'src/icons/'),
-      from: '**/*',
-    }]),
-    new ScriptExtHtmlWebpackPlugin({
-      defaultAttribute: 'defer',
-    }),
-    new StatsWriterPlugin({
-      transform: function(data, opts) {
-        let stats = opts.compiler.getStats().toJson({chunkModules: true});
-        return JSON.stringify(stats, null, 2);
+    new CopyWebpackPlugin([
+      {
+        context: path.join(root, 'src/icons/'),
+        from: '**/*',
       },
-    }),
+    ]),
+    // new ScriptExtHtmlWebpackPlugin({
+    //   defaultAttribute: 'defer',
+    // }),
+    // new StatsWriterPlugin({
+    //   transform: function(data, opts) {
+    //     let stats = opts.compiler.getStats().toJson({ chunkModules: true });
+    //     return JSON.stringify(stats, null, 2);
+    //   },
+    // }),
   ],
   resolve: {
     alias: {

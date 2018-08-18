@@ -19,21 +19,26 @@ class DonationStream extends Component {
     newCount: PropTypes.number.isRequired,
     refresh: PropTypes.func.isRequired,
   };
+
   componentDidMount() {
-    this.stream = this.createStream().subscribe(donations => this.props.addNewDonations(donations));
+    const { addNewDonations } = this.props;
+    this.stream = this.createStream().subscribe(donations => addNewDonations(donations));
   }
+
   componentWillUnmount() {
     this.stream.unsubscribe();
   }
+
   createStream() {
+    const { addDonations } = this.props;
     this.socket = io(`${API_PROTOCOL}://${API_HOST}`);
 
-    this.socket.on('existing-donations', (update) => {
-      this.props.addDonations(update);
+    this.socket.on('existing-donations', update => {
+      addDonations(update);
     });
 
-    const observable = new Observable((observer) => {
-      this.socket.on('new-donation', (update) => {
+    const observable = new Observable(observer => {
+      this.socket.on('new-donation', update => {
         observer.next(update.new_val);
       });
       return () => {
@@ -43,6 +48,7 @@ class DonationStream extends Component {
 
     return observable.bufferTime(500).filter(donations => donations && donations.length);
   }
+
   render() {
     const { donations, newCount, refresh } = this.props;
     return (

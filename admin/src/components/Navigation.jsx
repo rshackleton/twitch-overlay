@@ -51,6 +51,7 @@ class Navigation extends Component {
 
   render() {
     const { classes, currentRoute, redirectTo } = this.props;
+    const { open } = this.state;
     const leftDrawerItems = (
       <List className={classes.list} disablePadding>
         <ListItem button onClick={() => redirectTo('/')}>
@@ -80,7 +81,7 @@ class Navigation extends Component {
         </AppBar>
         <Drawer
           anchor="left"
-          open={this.state.open}
+          open={open}
           onClick={this.closeDrawer}
           onRequestClose={this.closeDrawer}
         >
