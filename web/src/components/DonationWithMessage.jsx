@@ -57,7 +57,7 @@ const Separator = glamorous.span({
 function getSpeed(donation) {
   const name = donation.donorDisplayName;
   const amount = numeral(donation.amount).format('0.00');
-  const message = donation.message;
+  const { message } = donation;
   const contents = name + amount + message;
   return `${contents.length / 4}s`;
 }
