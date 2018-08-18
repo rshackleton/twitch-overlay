@@ -30,7 +30,9 @@ const DonationList = ({ classes, donations }) => (
           <Card key={item.id} className={classes.card}>
             <CardContent>
               <Typography type="headline">{item.donorDisplayName}</Typography>
-              <Typography type="subheading" paragraph>{numeral(item.amount).format('$0.00')}</Typography>
+              <Typography type="subheading" paragraph>
+                {numeral(item.amount).format('$0.00')}
+              </Typography>
               <Typography type="body2">{item.message || 'No message'}</Typography>
             </CardContent>
           </Card>

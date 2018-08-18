@@ -7,21 +7,16 @@ import 'rxjs/add/operator/filter';
 import PropTypes from 'prop-types';
 import io from 'socket.io-client';
 
-import {
-  fetchDonationsFulfilled,
-  streamDonationsFulfilled,
-} from 'actions';
+import { fetchDonationsFulfilled, streamDonationsFulfilled } from 'actions';
 
 class DonationStream extends Component {
   static propTypes = {
     addDonations: PropTypes.func.isRequired,
     addNewDonations: PropTypes.func.isRequired,
     children: PropTypes.element.isRequired,
-  }
+  };
   componentDidMount() {
-    this.stream = this.createStream().subscribe(
-      donations => this.props.addNewDonations(donations),
-    );
+    this.stream = this.createStream().subscribe(donations => this.props.addNewDonations(donations));
   }
   componentWillUnmount() {
     this.stream.unsubscribe();
@@ -42,9 +37,7 @@ class DonationStream extends Component {
       };
     });
 
-    return observable
-      .bufferTime(500)
-      .filter(donations => donations && donations.length);
+    return observable.bufferTime(500).filter(donations => donations && donations.length);
   }
   render() {
     return this.props.children;
@@ -56,4 +49,7 @@ const mapDispatchToProps = dispatch => ({
   addNewDonations: donations => dispatch(streamDonationsFulfilled(donations)),
 });
 
-export default connect(null, mapDispatchToProps)(DonationStream);
+export default connect(
+  null,
+  mapDispatchToProps,
+)(DonationStream);

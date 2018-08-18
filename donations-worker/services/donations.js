@@ -1,55 +1,77 @@
-const moment = require('moment');
-const request = require('request-promise-native');
+import firebase from 'firebase';
+import 'firebase/firestore';
+import moment from 'moment';
+import { get } from 'request-promise-native';
 
-const logger = require('./logger');
-const db = require('./rethinkdb');
+import logger from './logger';
+
+// Initialise firebase reference.
+firebase.initializeApp({
+  apiKey: process.env.FIREBASE_APIKEY,
+  authDomain: process.env.FIREBASE_AUTHDOMAIN,
+  projectId: process.env.FIREBASE_PROJECTID,
+});
+
+// Initialise firestore reference.
+var db = firebase.firestore();
+db.settings({ timestampsInSnapshots: true });
 
 /** Fetch donations from Just Giving API. */
-function fetch() {
-  const appId = process.env.JUSTGIVING_APP_ID || '';
-  const pageShortName = process.env.JUSTGIVING_PAGE || 'example';
+export async function fetch() {
+  try {
+    // Get new donations from api.
+    let newDonations = await getDonations();
 
-  const donationsUrl = `https://api.justgiving.com/v1/fundraising/pages/${pageShortName}/donations?pageNum=1&pageSize=100`;
+    logger.info(`Fetched ${newDonations.length} donations.`);
 
+    // Get existing donations from db.
+    const collection = db.collection('donations');
+    const existingDonations = await collection.get();
+
+    // Filter out donations that already exist in db.
+    newDonations = newDonations.filter(
+      d1 => !existingDonations.docs.some(d2 => d1.externalId === d2.data().externalId),
+    );
+
+    logger.info(`Adding ${newDonations.length} new donations.`);
+
+    // Add all new donations.
+    newDonations.forEach(donation => collection.add(donation));
+  } catch (error) {
+    logger.error(error);
+  }
+}
+
+/** Get latest donations from JustGiving. */
+async function getDonations() {
+  const donationsUrl = getDonationsUrl();
   logger.info(`Fetching ${donationsUrl}`);
 
-  return db.initialise().then(() => request
-    .get(donationsUrl, { json: true, headers: { 'x-api-key': appId} })
-    .then(data => data.donations)
-    .then(donations => donations.map(clean))
-    .then(donations => donations.map(save))
-    .catch((err) => {
-      logger.error(err.message);
-      return err;
-    }));
+  const appId = process.env.JUSTGIVING_APP_ID || '';
+  const data = await get(donationsUrl, {
+    headers: { 'x-api-key': appId },
+    json: true,
+  });
+
+  const newDonations = data.donations.map(clean);
+  return newDonations;
+}
+
+/** Get JustGiving API URL. */
+function getDonationsUrl() {
+  const pageShortName = process.env.JUSTGIVING_PAGE || 'example';
+  const donationsUrl = `https://api.justgiving.com/v1/fundraising/pages/${pageShortName}/donations?pageNum=1&pageSize=100`;
+  return donationsUrl;
 }
 
 /** Clean JSON data. */
 function clean(donation) {
   const cleaned = Object.assign(donation, {
     donationDate: moment(donation.donationDate).toDate(),
-    externalId: donation.id
+    externalId: donation.id,
   });
 
   delete cleaned.id;
 
   return cleaned;
 }
-
-/** Insert donation. */
-function save(donation) {
-  return db.retrieveDonation(donation.externalId).then(
-    (arr) => {
-      if (arr && arr.length) {
-        logger.info(`Donation ${donation.externalId} already exists`);
-        return null;
-      }
-
-      return db.insertDonation(donation).then(
-        () => logger.info(`Saved donation ${donation.externalId}`)
-      );
-    }
-  );
-}
-
-module.exports = { fetch };

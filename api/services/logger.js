@@ -1,31 +1,16 @@
-const winston = require('winston');
-require('winston-loggly-bulk');
-
-winston.emitErrs = true;
+import winston from 'winston';
+import { Loggly } from 'winston-loggly-bulk';
 
 const logger = new winston.Logger({
   transports: [
-    new winston.transports.Loggly({
-      level: 'info',
+    new Loggly({
+      json: true,
       subdomain: process.env.LOGGLY_SUBDOMAIN,
       token: process.env.LOGGLY_TOKEN,
-      json: true,
       tags: ['twitch-overlay', 'api'],
     }),
-    new winston.transports.Console({
-        level: 'debug',
-        handleExceptions: true,
-        json: false,
-        colorize: true
-    }),
+    new winston.transports.Console(),
   ],
-  exitOnError: false
 });
 
-logger.stream = {
-  write: function(message, encoding){
-    logger.info(message);
-  }
-};
-
-module.exports = logger;
+export default logger;

@@ -4,8 +4,8 @@ import numeral from 'numeral';
 import 'numeral/locales/en-gb';
 import PropTypes from 'prop-types';
 
-const width = (327 - (6 * 2));
-const height = (87 - (6 * 2));
+const width = 327 - 6 * 2;
+const height = 87 - 6 * 2;
 
 const Widget = glamorous.div({
   display: 'flex',
@@ -16,7 +16,7 @@ const Widget = glamorous.div({
   height,
   padding: '8px',
   background: '#323232',
-  fontFamily: '\'Press Start 2P\', cursive',
+  fontFamily: "'Press Start 2P', cursive",
 });
 
 const Heading = glamorous.h1({
@@ -55,9 +55,15 @@ const DonationTotal = ({ target, total }) => (
   <Widget>
     <Heading>Total donations!</Heading>
     <Message>
-      <Value><Symbol>£</Symbol>{numeral(total).format('0.00')}</Value>
+      <Value>
+        <Symbol>£</Symbol>
+        {numeral(total).format('0.00')}
+      </Value>
       <Separator>/</Separator>
-      <Value><Symbol>£</Symbol>{numeral(target).format('0.00')}</Value>
+      <Value>
+        <Symbol>£</Symbol>
+        {numeral(target).format('0.00')}
+      </Value>
     </Message>
   </Widget>
 );

@@ -14,7 +14,9 @@ const App = () => (
     <ConnectedRouter history={history}>
       <DonationStream>
         <div>
-          {routes.map(route => <Route {...route} />)}
+          {routes.map(route => (
+            <Route {...route} />
+          ))}
         </div>
       </DonationStream>
     </ConnectedRouter>

@@ -19,23 +19,24 @@ firebase.initializeApp(config);
 // Add background message handling.
 const messaging = firebase.messaging();
 
-messaging.setBackgroundMessageHandler((payload) => {
+messaging.setBackgroundMessageHandler(payload => {
   const donation = payload.data;
 
-  return self.registration.getNotifications()
-    .then((notifications) => {
+  return self.registration
+    .getNotifications()
+    .then(notifications => {
       if (notifications && notifications.length) {
         return notifications[0];
       }
       return null;
     })
-    .then((currentNotification) => {
+    .then(currentNotification => {
       let notificationTitle;
       let notificationOptions;
 
       if (currentNotification) {
         // Increment existing donation notification.
-        const count = (currentNotification.data.count + 1);
+        const count = currentNotification.data.count + 1;
 
         notificationTitle = `${count} new donations have been received!`;
         notificationOptions = {
@@ -47,15 +48,14 @@ messaging.setBackgroundMessageHandler((payload) => {
         // New donation notification.
         notificationTitle = 'A new donation has been received!';
         notificationOptions = {
-          body: `A new donation of £${donation.amount} has been receieved from ${donation.donorDisplayName}.`,
+          body: `A new donation of £${donation.amount} has been receieved from ${
+            donation.donorDisplayName
+          }.`,
           data: { count: 1 },
         };
       }
 
-      return self.registration.showNotification(
-        notificationTitle,
-        notificationOptions,
-      );
+      return self.registration.showNotification(notificationTitle, notificationOptions);
     });
 });
 
@@ -74,17 +74,14 @@ const cdnCacheStrategy = workboxSW.strategies.staleWhileRevalidate({
   },
 });
 
-workboxSW.router.registerRoute(/\.(css|js|html)$/,
-  localCacheStrategy);
+workboxSW.router.registerRoute(/\.(css|js|html)$/, localCacheStrategy);
 
-workboxSW.router.registerRoute(/^(https:\/\/fonts\.googleapis.com\/).+/,
-  cdnCacheStrategy);
+workboxSW.router.registerRoute(/^(https:\/\/fonts\.googleapis.com\/).+/, cdnCacheStrategy);
 
-workboxSW.router.registerRoute(/^(https:\/\/fonts\.gstatic.com\/).+/,
-  cdnCacheStrategy);
+workboxSW.router.registerRoute(/^(https:\/\/fonts\.gstatic.com\/).+/, cdnCacheStrategy);
 
 // Handle notification click events.
-self.addEventListener('notificationclick', (event) => {
+self.addEventListener('notificationclick', event => {
   // Close notification.
   event.notification.close();
 
@@ -96,7 +93,7 @@ self.addEventListener('notificationclick', (event) => {
       type: 'window',
       includeUncontrolled: true,
     })
-    .then((windowClients) => {
+    .then(windowClients => {
       let matchingClient = null;
 
       for (let i = 0; i < windowClients.length; i += 1) {
