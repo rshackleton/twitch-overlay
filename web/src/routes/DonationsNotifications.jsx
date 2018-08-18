@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { DonationWithMessage } from 'components';
+import { DonationStream, DonationWithMessage } from 'components';
 
 import audioFairground from '../audio/fairground.mp3';
 import audioWow from '../audio/wow.mp3';
@@ -20,10 +20,12 @@ class DonationsNotifications extends Component {
     newDonation: donationShape,
     topDonation: donationShape,
   };
+
   static defaultProps = {
     newDonation: null,
     topDonation: null,
   };
+
   componentDidUpdate(prevProps) {
     const { newDonation } = this.props;
     const { oldDonation } = prevProps;
@@ -32,10 +34,12 @@ class DonationsNotifications extends Component {
       this.playNotificationSound(newDonation);
     }
   }
+
   playNotificationSound(donation) {
     this.audio.src = notifications.find(n => n.min <= donation.amount).src;
     this.audio.play();
   }
+
   renderDonation() {
     const { newDonation, topDonation } = this.props;
     if (newDonation) {
@@ -46,7 +50,8 @@ class DonationsNotifications extends Component {
           donation={newDonation}
         />
       );
-    } else if (topDonation) {
+    }
+    if (topDonation) {
       return (
         <DonationWithMessage
           key={topDonation.externalId}
@@ -57,16 +62,19 @@ class DonationsNotifications extends Component {
     }
     return null;
   }
+
   render() {
     return (
-      <div>
-        <audio
-          ref={(c) => {
-            this.audio = c;
-          }}
-        />
-        {this.renderDonation()}
-      </div>
+      <DonationStream>
+        <div>
+          <audio
+            ref={c => {
+              this.audio = c;
+            }}
+          />
+          {this.renderDonation()}
+        </div>
+      </DonationStream>
     );
   }
 }

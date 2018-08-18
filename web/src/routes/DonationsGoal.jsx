@@ -2,9 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { DonationTotal } from 'components';
+import { DonationStream, DonationTotal } from 'components';
 
-const DonationsGoal = ({ target, total }) => <DonationTotal target={target} total={total} />;
+const DonationsGoal = ({ target, total }) => (
+  <DonationStream>
+    <DonationTotal target={target} total={total} />
+  </DonationStream>
+);
 
 DonationsGoal.propTypes = {
   target: PropTypes.number.isRequired,

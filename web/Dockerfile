@@ -1,13 +1,37 @@
-FROM mhart/alpine-node:latest
+FROM node:8.11.4-alpine
 
-ENV NODE_ENV production
+# Install dependencies
+RUN apk update \
+  && apk add nginx \
+  && apk add yarn
 
-COPY package.json /tmp/package.json
-RUN cd /tmp && yarn --production=false
-RUN mkdir -p /opt/app && cp -a /tmp/node_modules /opt/app
+# Install packages with yarn
+RUN mkdir /tmp/packages
+COPY package.json /tmp/packages/package.json
+COPY yarn.lock /tmp/packages/yarn.lock
+RUN cd /tmp/packages && yarn --production=false
 
-WORKDIR /opt/app
+# Copy packages to app directory
+RUN mkdir /tmp/app
+RUN mkdir -p /tmp/app && cp -a /tmp/packages/node_modules /tmp/app
 
-COPY . /opt/app
+# Copy all app files to directory
+COPY . /tmp/app
 
-CMD ["yarn", "start"]
+# Compile app
+RUN cd /tmp/app && yarn build
+
+# Copy output to www directory
+RUN mkdir /www \
+  && cp -a /tmp/app/dist/. /www/ \
+  && adduser -D -g 'www' www \
+  && chown -R www:www /www
+
+# Copy nginx config
+RUN chown -R www:www /var/lib/nginx
+COPY config/nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 80
+
+# Run nginx in foreground
+CMD ["nginx", "-g", "pid /tmp/nginx.pid; daemon off;"]
