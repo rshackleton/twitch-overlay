@@ -30,13 +30,13 @@ module.exports = merge.smart(require('./webpack.config'), {
       chunks: 'all',
     },
   },
-  performance: {
-    assetFilter: assetFileName => !/(\.json|\.map)$/.test(assetFileName),
-  },
   output: {
     filename: '[name].[chunkhash].js',
     path: path.join(root, 'dist'),
     publicPath: '/',
+  },
+  performance: {
+    assetFilter: assetFileName => !/(\.json|\.map)$/.test(assetFileName),
   },
   plugins: [
     new CopyWebpackPlugin([
