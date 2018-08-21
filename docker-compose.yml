@@ -1,93 +1,65 @@
-version: '2'
-
-networks:
-  reverse-proxy:
-    external:
-      name: reverse-proxy
-  back:
-    driver: bridge
+version: '3'
 
 services:
   web:
     restart: always
-    build: ./web
-    image: web
-    networks:
-      - reverse-proxy
-      - back
+    image: rshackleton/twitch-overlay-web:release-2018
+    labels:
+      traefik.frontend.rule: 'Host:${WEB_HOST}'
+      traefik.port: '${WEB_PORT}'
     expose:
       - '${WEB_PORT}'
-    ports:
-      - '${WEB_PORT}:${WEB_PORT}'
     environment:
-      - 'API_HOST=${API_HOST}'
-      - 'API_PROTOCOL=${API_PROTOCOL}'
-      - 'LETSENCRYPT_EMAIL=${EMAIL_ADDRESS}'
-      - 'LETSENCRYPT_HOST=${WEB_HOST}'
-      - 'LOGGLY_TOKEN=${LOGGLY_TOKEN}'
-      - 'LOGGLY_SUBDOMAIN=${LOGGLY_SUBDOMAIN}'
-      - 'VIRTUAL_HOST=${WEB_HOST}'
-      - 'VIRTUAL_NETWORK=reverse-proxy'
-      - 'VIRTUAL_PORT=${WEB_PORT}'
+      API_HOST: '${API_HOST}'
+      API_PROTOCOL: '${API_PROTOCOL}'
+      LOGGLY_TOKEN: '${LOGGLY_TOKEN}'
+      LOGGLY_SUBDOMAIN: '${LOGGLY_SUBDOMAIN}'
+      PORT: '${WEB_PORT}'
 
   admin:
     restart: always
-    build: ./admin
-    image: admin
-    networks:
-      - reverse-proxy
-      - back
+    image: rshackleton/twitch-overlay-admin:release-2018
+    labels:
+      traefik.frontend.rule: 'Host:${ADMIN_HOST}'
+      traefik.port: '${ADMIN_PORT}'
     expose:
       - '${ADMIN_PORT}'
-    ports:
-      - '${ADMIN_PORT}:${ADMIN_PORT}'
     environment:
-      - 'API_HOST=${API_HOST}'
-      - 'API_PROTOCOL=${API_PROTOCOL}'
-      - 'LETSENCRYPT_EMAIL=${EMAIL_ADDRESS}'
-      - 'LETSENCRYPT_HOST=${ADMIN_HOST}'
-      - 'LOGGLY_TOKEN=${LOGGLY_TOKEN}'
-      - 'LOGGLY_SUBDOMAIN=${LOGGLY_SUBDOMAIN}'
-      - 'VIRTUAL_HOST=${ADMIN_HOST}'
-      - 'VIRTUAL_NETWORK=reverse-proxy'
-      - 'VIRTUAL_PORT=${ADMIN_PORT}'
+      API_HOST: '${API_HOST}'
+      API_PROTOCOL: '${API_PROTOCOL}'
+      LOGGLY_TOKEN: '${LOGGLY_TOKEN}'
+      LOGGLY_SUBDOMAIN: '${LOGGLY_SUBDOMAIN}'
+      PORT: '${ADMIN_PORT}'
 
   api:
     restart: always
-    build: ./api
-    image: api
-    networks:
-      - reverse-proxy
-      - back
+    image: rshackleton/twitch-overlay-api:release-2018
+    labels:
+      traefik.frontend.rule: 'Host:${API_HOST}'
+      traefik.port: '${API_PORT}'
     expose:
       - '${API_PORT}'
-    ports:
-      - '${API_PORT}:${API_PORT}'
     environment:
-      - 'FIREBASE_APIKEY=${FIREBASE_APIKEY}'
-      - 'FIREBASE_AUTHDOMAIN=${FIREBASE_AUTHDOMAIN}'
-      - 'FIREBASE_MESSAGING_SERVERKEY=${FIREBASE_MESSAGING_SERVERKEY}'
-      - 'FIREBASE_PROJECTID=${FIREBASE_PROJECTID}'
-      - 'LETSENCRYPT_EMAIL=${EMAIL_ADDRESS}'
-      - 'LETSENCRYPT_HOST=${API_HOST}'
-      - 'LOGGLY_TOKEN=${LOGGLY_TOKEN}'
-      - 'LOGGLY_SUBDOMAIN=${LOGGLY_SUBDOMAIN}'
-      - 'VIRTUAL_HOST=${API_HOST}'
-      - 'VIRTUAL_NETWORK=reverse-proxy'
-      - 'VIRTUAL_PORT=${API_PORT}'
+      FIREBASE_APIKEY: '${FIREBASE_APIKEY}'
+      FIREBASE_AUTHDOMAIN: '${FIREBASE_AUTHDOMAIN}'
+      FIREBASE_MESSAGING_SERVERKEY: '${FIREBASE_MESSAGING_SERVERKEY}'
+      FIREBASE_PROJECTID: '${FIREBASE_PROJECTID}'
+      LOGGLY_TOKEN: '${LOGGLY_TOKEN}'
+      LOGGLY_SUBDOMAIN: '${LOGGLY_SUBDOMAIN}'
+      PORT: '${API_PORT}'
 
-  donations-worker:
+  worker:
     restart: always
-    build: ./donations-worker
-    image: donations-worker
-    networks:
-      - back
+    image: rshackleton/twitch-overlay-worker:release-2018
+    labels:
+      traefik.enable: false
     environment:
-      - 'FIREBASE_APIKEY=${FIREBASE_APIKEY}'
-      - 'FIREBASE_AUTHDOMAIN=${FIREBASE_AUTHDOMAIN}'
-      - 'FIREBASE_PROJECTID=${FIREBASE_PROJECTID}'
-      - 'JUSTGIVING_APP_ID=${JUSTGIVING_APP_ID}'
-      - 'JUSTGIVING_PAGE=${JUSTGIVING_PAGE}'
-      - 'LOGGLY_TOKEN=${LOGGLY_TOKEN}'
-      - 'LOGGLY_SUBDOMAIN=${LOGGLY_SUBDOMAIN}'
-      - 'POLL_INTERVAL=${POLL_INTERVAL}'
+      FIREBASE_APIKEY: '${FIREBASE_APIKEY}'
+      FIREBASE_AUTHDOMAIN: '${FIREBASE_AUTHDOMAIN}'
+      FIREBASE_MESSAGING_SERVERKEY: '${FIREBASE_MESSAGING_SERVERKEY}'
+      FIREBASE_PROJECTID: '${FIREBASE_PROJECTID}'
+      JUSTGIVING_APP_ID: '${JUSTGIVING_APP_ID}'
+      JUSTGIVING_PAGE: '${JUSTGIVING_PAGE}'
+      LOGGLY_TOKEN: '${LOGGLY_TOKEN}'
+      LOGGLY_SUBDOMAIN: '${LOGGLY_SUBDOMAIN}'
+      POLL_INTERVAL: '${POLL_INTERVAL}'
