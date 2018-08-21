@@ -6,7 +6,7 @@
     "start": "yarn build && yarn start:prd",
     "start:dev": "cross-env NODE_ENV=development webpack-dev-server --color --config config/webpack.dev.config.js --progress",
     "start:prd": "cross-env NODE_ENV=production nodemon index -L",
-    "build": "cross-env NODE_ENV=production webpack --color --config config/webpack.prd.config.js --progress"
+    "build": "cross-env NODE_ENV=production webpack --color --config config/webpack.prd.config.js"
   },
   "dependencies": {
     "babel-polyfill": "^6.23.0",
