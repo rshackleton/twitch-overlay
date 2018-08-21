@@ -41,7 +41,7 @@ Object.keys(routes).forEach(key => {
 
 // Start API server.
 const host = process.env.HOST || '0.0.0.0';
-const port = process.env.VIRTUAL_PORT || 5000;
+const port = process.env.PORT || 5000;
 
 server.listen(port, host, () => {
   logger.info(`Twitch overlay api listening on http://${host}:${port}`);
