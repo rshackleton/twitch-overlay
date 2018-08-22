@@ -15,9 +15,13 @@ module.exports = merge.smart(require('./webpack.config'), {
     port: 8080,
     stats: 'errors-only',
   },
-  devtool: 'cheap-eval-source-map',
+  devtool: 'source-map',
   entry: {
-    main: ['babel-polyfill', path.join(root, 'src')],
+    main: [
+      'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
+      'babel-polyfill',
+      path.join(root, 'src'),
+    ],
   },
   mode: 'development',
   module: {

@@ -27,7 +27,7 @@ const DonationList = ({ classes, donations }) => (
     <Grid container>
       <Grid item xs={12}>
         {donations.map(item => (
-          <Card key={item.id} className={classes.card}>
+          <Card key={item.externalId} className={classes.card}>
             <CardContent>
               <Typography type="headline">{item.donorDisplayName}</Typography>
               <Typography type="subheading" paragraph>
