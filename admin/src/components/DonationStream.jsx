@@ -38,8 +38,8 @@ class DonationStream extends Component {
     });
 
     const observable = new Observable(observer => {
-      this.socket.on('new-donation', update => {
-        observer.next(update.new_val);
+      this.socket.on('new-donation', donation => {
+        observer.next(donation);
       });
       return () => {
         this.socket.close();
