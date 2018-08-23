@@ -7,7 +7,10 @@ const Home = () => (
       <Link to="/goal">Donation Goal</Link>
     </li>
     <li>
-      <Link to="/notifications">Donation Notifications</Link>
+      <Link to="/latest">Latest Donation</Link>
+    </li>
+    <li>
+      <Link to="/top">Top Donation</Link>
     </li>
   </ul>
 );

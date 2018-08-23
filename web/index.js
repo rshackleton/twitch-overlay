@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 require('dotenv').config();
 
 require('babel-register')({

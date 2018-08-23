@@ -1,13 +1,11 @@
 import uniqBy from 'lodash/uniqBy';
-import {
-  FETCH_DONATIONS_FULFILLED,
-  STREAM_DONATIONS_FULFILLED,
-  SHOW_NEW_DONATION,
-} from 'actions';
+import { FETCH_DONATIONS_FULFILLED, STREAM_DONATIONS_FULFILLED, SHOW_NEW_DONATION } from 'actions';
 
 const initialState = {
   items: [],
   total: 0,
+  latest: null,
+  new: null,
   top: null,
 };
 
@@ -15,13 +13,11 @@ const donations = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_DONATIONS_FULFILLED:
     case STREAM_DONATIONS_FULFILLED: {
-      const items = cleanDonations([
-        ...state.items,
-        ...action.payload.donations,
-      ]);
+      const items = cleanDonations([...state.items, ...action.payload.donations]);
       return {
         ...state,
         items,
+        latest: getLatestDonation(items),
         top: getTopDonation(items),
         total: getDonationTotal(items),
       };
@@ -29,9 +25,7 @@ const donations = (state = initialState, action) => {
     case SHOW_NEW_DONATION: {
       return {
         ...state,
-        new: action.payload.donation ?
-          cleanDonation(action.payload.donation) :
-          null,
+        new: action.payload.donation ? cleanDonation(action.payload.donation) : null,
       };
     }
     default: {
@@ -57,15 +51,19 @@ function cleanDonation(donation) {
 
 /** Calculate donation total. */
 function getDonationTotal(items) {
-  return [...items]
-    .map(a => a.amount)
-    .reduce((a, b) => a + b, 0);
+  return [...items].map(a => (Number.isNaN(a.amount) ? 0 : a.amount)).reduce((a, b) => a + b, 0);
 }
 
-/** Calculate donation total. */
+/** Get latest donation. */
+function getLatestDonation(items) {
+  const sorted = [...items].sort(sortByDate);
+
+  return sorted[0];
+}
+
+/** Get top donations. */
 function getTopDonation(items) {
-  const sorted = [...items]
-    .sort(sortByAmount);
+  const sorted = [...items].sort(sortByAmount);
 
   return sorted[0];
 }
@@ -77,7 +75,7 @@ function sortByAmount(a, b) {
 
 /** Sort donations by date. */
 function sortByDate(a, b) {
-  return a.donationDate < b.donationDate ? 1 : -1;
+  return a.donationDate.seconds < b.donationDate.seconds ? 1 : -1;
 }
 
 export default donations;
