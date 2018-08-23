@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 
 import { DonationStream, DonationWithMessage } from 'components';
 
-import audioFairground from '../audio/fairground.mp3';
-import audioWow from '../audio/wow.mp3';
+import audioFairground from '../../audio/fairground.mp3';
+import audioWow from '../../audio/wow.mp3';
 
 const notifications = [{ min: 20, src: audioFairground }, { min: 0, src: audioWow }];
 
@@ -17,21 +17,19 @@ const donationShape = PropTypes.shape({
 
 class DonationsNotifications extends Component {
   static propTypes = {
-    newDonation: donationShape,
-    topDonation: donationShape,
+    latestDonation: donationShape,
   };
 
   static defaultProps = {
-    newDonation: null,
-    topDonation: null,
+    latestDonation: null,
   };
 
   componentDidUpdate(prevProps) {
-    const { newDonation } = this.props;
-    const { oldDonation } = prevProps;
+    const { latestDonation } = this.props;
+    const { latestDonation: oldDonation } = prevProps;
 
-    if (newDonation && (!oldDonation || newDonation.externalId !== oldDonation.externalId)) {
-      this.playNotificationSound(newDonation);
+    if (latestDonation && oldDonation && latestDonation.externalId !== oldDonation.externalId) {
+      this.playNotificationSound(latestDonation);
     }
   }
 
@@ -41,22 +39,13 @@ class DonationsNotifications extends Component {
   }
 
   renderDonation() {
-    const { newDonation, topDonation } = this.props;
-    if (newDonation) {
+    const { latestDonation } = this.props;
+    if (latestDonation) {
       return (
         <DonationWithMessage
-          key={newDonation.externalId}
+          key={latestDonation.externalId}
           title="New Donation"
-          donation={newDonation}
-        />
-      );
-    }
-    if (topDonation) {
-      return (
-        <DonationWithMessage
-          key={topDonation.externalId}
-          title="Top Donation"
-          donation={topDonation}
+          donation={latestDonation}
         />
       );
     }
@@ -80,8 +69,7 @@ class DonationsNotifications extends Component {
 }
 
 const mapStateToProps = state => ({
-  newDonation: state.donations.new,
-  topDonation: state.donations.top,
+  latestDonation: state.donations.latest,
 });
 
 export default connect(mapStateToProps)(DonationsNotifications);
