@@ -1,4 +1,3 @@
-/* eslint-disable */
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
@@ -22,14 +21,6 @@ module.exports = merge.smart(require('./webpack.config'), {
     ],
   },
   mode: 'development',
-  module: {
-    rules: [
-      {
-        test: /\.(sa|sc|c)ss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-      },
-    ],
-  },
   output: {
     filename: '[name].[hash].js',
     path: path.join(root, 'dist'),

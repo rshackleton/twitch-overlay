@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import glamorous from 'glamorous';
+import styled from 'react-emotion';
 import numeral from 'numeral';
 import 'numeral/locales/en-gb';
 
@@ -9,49 +9,49 @@ import { Marquee } from 'components';
 const width = 460 - 6 * 2;
 const height = 111 - 6 * 2;
 
-const Widget = glamorous.div({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'flex-start',
-  justifyContent: 'center',
-  width,
-  height,
-  padding: '8px',
-  background: '#323232',
-  fontFamily: "'Press Start 2P', cursive",
-  overflow: 'hidden',
-});
+const Widget = styled('div')`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: ${width}px;
+  height: ${height}px;
+  padding: 8px;
+  background: #323232;
+  font-family: 'Monkey Island 1990';
+  overflow: hidden;
+`;
 
-const Heading = glamorous.h1({
-  color: '#00DFFF',
-  fontSize: '12px',
-  fontWeight: 'normal',
-  lineHeight: '14px',
-  margin: '0 0 16px',
-  padding: '0',
-  textTransform: 'uppercase',
-  verticalAlign: 'middle',
-});
+const Heading = styled('h1')`
+  color: #00dfff;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 14px;
+  margin: 0 0 16px;
+  padding: 0;
+  text-transform: uppercase;
+  vertical-align: middle;
+`;
 
-const Message = glamorous.p({
-  color: '#FFFF65',
-  fontSize: '16px',
-  fontWeight: 'normal',
-  lineHeight: '22px',
-  margin: '0',
-  padding: '0',
-  textTransform: 'uppercase',
-  verticalAlign: 'middle',
-  whiteSpace: 'nowrap',
-});
+const Message = styled('p')`
+  color: #ffff65;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 22px;
+  margin: 0;
+  padding: 0;
+  text-transform: uppercase;
+  vertical-align: middle;
+  white-space: nowrap;
+`;
 
-const Symbol = glamorous.span({
-  marginRight: '4px',
-});
+const Symbol = styled('span')`
+  margin-right: 4px;
+`;
 
-const Separator = glamorous.span({
-  margin: '0 12px',
-});
+const Separator = styled('span')`
+  margin: 0 12px;
+`;
 
 /** Calculate speed from donation message length. */
 function getSpeed(donation) {
