@@ -1,57 +1,55 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import glamorous from 'glamorous';
+import styled from 'react-emotion';
 import numeral from 'numeral';
 import 'numeral/locales/en-gb';
 
 import { Marquee } from 'components';
 
-const width = 460 - 6 * 2;
-const height = 111 - 6 * 2;
+const Widget = styled('div')`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: ${({ width }) => width}px;
+  height: ${({ height }) => height}px;
+  padding: 32px;
+  background: #000000;
+  font-family: 'Monkey Island 1990';
+  overflow: hidden;
+`;
 
-const Widget = glamorous.div({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'flex-start',
-  justifyContent: 'center',
-  width,
-  height,
-  padding: '8px',
-  background: '#323232',
-  fontFamily: "'Press Start 2P', cursive",
-  overflow: 'hidden',
-});
+const Heading = styled('h1')`
+  color: #eeeb22;
+  font-size: 24px;
+  font-weight: normal;
+  line-height: 1.5em;
+  margin: 0 0 16px;
+  padding: 0;
+  text-transform: uppercase;
+  vertical-align: middle;
+`;
 
-const Heading = glamorous.h1({
-  color: '#00DFFF',
-  fontSize: '12px',
-  fontWeight: 'normal',
-  lineHeight: '14px',
-  margin: '0 0 16px',
-  padding: '0',
-  textTransform: 'uppercase',
-  verticalAlign: 'middle',
-});
+const Message = styled('p')`
+  color: #dc52dc;
+  font-size: 30px;
+  font-weight: normal;
+  line-height: 1.5em;
+  margin: 0;
+  padding: 0;
+  text-shadow: 2px 2px #540254;
+  text-transform: uppercase;
+  vertical-align: middle;
+  white-space: nowrap;
+`;
 
-const Message = glamorous.p({
-  color: '#FFFF65',
-  fontSize: '16px',
-  fontWeight: 'normal',
-  lineHeight: '22px',
-  margin: '0',
-  padding: '0',
-  textTransform: 'uppercase',
-  verticalAlign: 'middle',
-  whiteSpace: 'nowrap',
-});
+const Symbol = styled('span')`
+  margin-right: 4px;
+`;
 
-const Symbol = glamorous.span({
-  marginRight: '4px',
-});
-
-const Separator = glamorous.span({
-  margin: '0 12px',
-});
+const Separator = styled('span')`
+  margin: 0 12px;
+`;
 
 /** Calculate speed from donation message length. */
 function getSpeed(donation) {
@@ -62,10 +60,10 @@ function getSpeed(donation) {
   return `${contents.length / 4}s`;
 }
 
-const DonationWithMessage = ({ title, donation }) => (
-  <Widget>
+const DonationWithMessage = ({ donation, height, title, width }) => (
+  <Widget height={height} width={width}>
     <Heading>{title}</Heading>
-    <Marquee delay="0.5s" height="22px" speed={getSpeed(donation)}>
+    <Marquee delay="0.5s" height="45px" speed={getSpeed(donation)}>
       <Message>
         {donation.donorDisplayName}
         <Separator>&mdash;</Separator>
@@ -79,11 +77,13 @@ const DonationWithMessage = ({ title, donation }) => (
 );
 
 DonationWithMessage.propTypes = {
-  title: PropTypes.string.isRequired,
   donation: PropTypes.shape({
     amount: PropTypes.number.isRequired,
     donorDisplayName: PropTypes.string.isRequired,
   }).isRequired,
+  height: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  width: PropTypes.number.isRequired,
 };
 
 export default DonationWithMessage;

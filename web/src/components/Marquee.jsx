@@ -1,35 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import glamorous from 'glamorous';
-import { css } from 'glamor';
+import styled, { keyframes } from 'react-emotion';
 
-const animation = css.keyframes({
-  '0%': { transform: 'translateX(0)' },
-  '100%': { transform: 'translateX(-50%)' },
-});
+const animation = keyframes`
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+`;
 
-const MarqueeContainer = glamorous.div(({ height }) => ({
-  display: 'block',
-  width: '100%',
-  height,
-  position: 'relative',
-  overflow: 'hidden',
-}));
+const MarqueeContainer = styled('div')`
+  display: block;
+  width: 100%;
+  height: ${({ height }) => height};
+  position: relative;
+  overflow: hidden;
+`;
 
-const MarqueeInner = glamorous.div(({ delay, speed }) => ({
-  display: 'block',
-  position: 'absolute',
-  height: '100%',
-  whiteSpace: 'nowrap',
-  animation: `${animation} ${speed} linear infinite`,
-  animationDelay: delay,
-}));
+const MarqueeInner = styled('div')`
+  display: block;
+  position: absolute;
+  height: 100%;
+  white-space: nowrap;
+  animation: ${({ speed }) => `${animation} ${speed} linear infinite`};
+  animation-delay: ${({ delay }) => delay};
+`;
 
-const MarqueeItem = glamorous.div({
-  display: 'inline-block',
-  marginRight: '50px',
-  whiteSpace: 'nowrap',
-});
+const MarqueeItem = styled('div')`
+  display: inline-block;
+  margin-right: 50px;
+  white-space: nowrap;
+`;
 
 const Marquee = ({ children, delay, height, speed }) => (
   <MarqueeContainer height={height}>

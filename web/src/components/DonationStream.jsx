@@ -1,9 +1,8 @@
 /* global API_HOST:false, API_PROTOCOL:false */
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/bufferTime';
-import 'rxjs/add/operator/filter';
+import { Observable } from 'rxjs';
+import { bufferTime, filter } from 'rxjs/operators';
 import PropTypes from 'prop-types';
 import io from 'socket.io-client';
 
@@ -13,7 +12,11 @@ class DonationStream extends Component {
   static propTypes = {
     addDonations: PropTypes.func.isRequired,
     addNewDonations: PropTypes.func.isRequired,
-    children: PropTypes.element.isRequired,
+    children: PropTypes.element,
+  };
+
+  static defaultProps = {
+    children: null,
   };
 
   componentDidMount() {
@@ -42,7 +45,10 @@ class DonationStream extends Component {
       };
     });
 
-    return observable.bufferTime(500).filter(donations => donations && donations.length);
+    return observable.pipe(
+      bufferTime(500),
+      filter(donations => donations && donations.length),
+    );
   }
 
   render() {
