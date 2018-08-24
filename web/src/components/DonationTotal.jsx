@@ -4,26 +4,23 @@ import numeral from 'numeral';
 import 'numeral/locales/en-gb';
 import PropTypes from 'prop-types';
 
-const width = 327 - 6 * 2;
-const height = 87 - 6 * 2;
-
 const Widget = styled('div')`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  width: ${width}px;
-  height: ${height}px;
-  padding: 8px;
-  background: #323232;
+  width: ${({ width }) => width}px;
+  height: ${({ height }) => height}px;
+  padding: 32px;
+  background: #000000;
   font-family: 'Monkey Island 1990';
 `;
 
 const Heading = styled('h1')`
-  color: #00dfff;
-  font-size: 12px;
+  color: #eeeb22;
+  font-size: 24px;
   font-weight: normal;
-  line-height: 14px;
+  line-height: 1.5em;
   margin: 0 0 16px;
   padding: 0;
   text-transform: uppercase;
@@ -31,14 +28,16 @@ const Heading = styled('h1')`
 `;
 
 const Message = styled('p')`
-  color: #ffff65;
-  font-size: 16px;
+  color: #dc52dc;
+  font-size: 30px;
   font-weight: normal;
-  line-height: 22px;
+  line-height: 1.5em;
   margin: 0;
   padding: 0;
+  text-shadow: 2px 2px #540254;
   text-transform: uppercase;
   vertical-align: middle;
+  white-space: nowrap;
 `;
 
 const Value = styled('span')``;
@@ -51,8 +50,8 @@ const Separator = styled('span')`
   margin: 0 8px;
 `;
 
-const DonationTotal = ({ target, total }) => (
-  <Widget>
+const DonationTotal = ({ height, target, total, width }) => (
+  <Widget height={height} width={width}>
     <Heading>Total donations!</Heading>
     <Message>
       <Value>
@@ -69,8 +68,10 @@ const DonationTotal = ({ target, total }) => (
 );
 
 DonationTotal.propTypes = {
+  height: PropTypes.number.isRequired,
   target: PropTypes.number.isRequired,
   total: PropTypes.number.isRequired,
+  width: PropTypes.number.isRequired,
 };
 
 export default DonationTotal;

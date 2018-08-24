@@ -12,7 +12,11 @@ class DonationStream extends Component {
   static propTypes = {
     addDonations: PropTypes.func.isRequired,
     addNewDonations: PropTypes.func.isRequired,
-    children: PropTypes.element.isRequired,
+    children: PropTypes.element,
+  };
+
+  static defaultProps = {
+    children: null,
   };
 
   componentDidMount() {

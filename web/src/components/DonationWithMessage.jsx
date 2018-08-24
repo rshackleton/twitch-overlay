@@ -6,27 +6,24 @@ import 'numeral/locales/en-gb';
 
 import { Marquee } from 'components';
 
-const width = 460 - 6 * 2;
-const height = 111 - 6 * 2;
-
 const Widget = styled('div')`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  width: ${width}px;
-  height: ${height}px;
-  padding: 8px;
-  background: #323232;
+  width: ${({ width }) => width}px;
+  height: ${({ height }) => height}px;
+  padding: 32px;
+  background: #000000;
   font-family: 'Monkey Island 1990';
   overflow: hidden;
 `;
 
 const Heading = styled('h1')`
-  color: #00dfff;
-  font-size: 12px;
+  color: #eeeb22;
+  font-size: 24px;
   font-weight: normal;
-  line-height: 14px;
+  line-height: 1.5em;
   margin: 0 0 16px;
   padding: 0;
   text-transform: uppercase;
@@ -34,12 +31,13 @@ const Heading = styled('h1')`
 `;
 
 const Message = styled('p')`
-  color: #ffff65;
-  font-size: 16px;
+  color: #dc52dc;
+  font-size: 30px;
   font-weight: normal;
-  line-height: 22px;
+  line-height: 1.5em;
   margin: 0;
   padding: 0;
+  text-shadow: 2px 2px #540254;
   text-transform: uppercase;
   vertical-align: middle;
   white-space: nowrap;
@@ -62,10 +60,10 @@ function getSpeed(donation) {
   return `${contents.length / 4}s`;
 }
 
-const DonationWithMessage = ({ title, donation }) => (
-  <Widget>
+const DonationWithMessage = ({ donation, height, title, width }) => (
+  <Widget height={height} width={width}>
     <Heading>{title}</Heading>
-    <Marquee delay="0.5s" height="22px" speed={getSpeed(donation)}>
+    <Marquee delay="0.5s" height="45px" speed={getSpeed(donation)}>
       <Message>
         {donation.donorDisplayName}
         <Separator>&mdash;</Separator>
@@ -79,11 +77,13 @@ const DonationWithMessage = ({ title, donation }) => (
 );
 
 DonationWithMessage.propTypes = {
-  title: PropTypes.string.isRequired,
   donation: PropTypes.shape({
     amount: PropTypes.number.isRequired,
     donorDisplayName: PropTypes.string.isRequired,
   }).isRequired,
+  height: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  width: PropTypes.number.isRequired,
 };
 
 export default DonationWithMessage;
