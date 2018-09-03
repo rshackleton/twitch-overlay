@@ -54,7 +54,7 @@ const Separator = styled('span')`
 /** Calculate speed from donation message length. */
 function getSpeed(donation) {
   const name = donation.donorDisplayName;
-  const amount = numeral(donation.amount).format('0.00');
+  const amount = numeral(donation.donorLocalAmount).format('0.00');
   const { message } = donation;
   const contents = name + amount + message;
   return `${contents.length / 4}s`;
@@ -68,7 +68,7 @@ const DonationWithMessage = ({ donation, height, title, width }) => (
         {donation.donorDisplayName}
         <Separator>&mdash;</Separator>
         <Symbol>£</Symbol>
-        {numeral(donation.amount).format('0.00')}
+        {numeral(donation.donorLocalAmount).format('0.00')}
         <Separator>&mdash;</Separator>
         {donation.message}
       </Message>
