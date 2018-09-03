@@ -27,7 +27,9 @@ const App = ({ classes }) => (
       <div className={classes.root}>
         <Navigation routes={routes} />
         <div>
-          {routes.map(route => <Route {...route} />)}
+          {routes.map(route => (
+            <Route {...route} />
+          ))}
         </div>
       </div>
     </ConnectedRouter>

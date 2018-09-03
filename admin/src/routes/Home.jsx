@@ -21,9 +21,7 @@ const Home = ({ classes }) => (
     <Grid container>
       <Grid item xs={12}>
         <Paper className={classes.paper}>
-          <Typography>
-            Select an option from the menu.
-          </Typography>
+          <Typography>Select an option from the menu.</Typography>
         </Paper>
       </Grid>
     </Grid>

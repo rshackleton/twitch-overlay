@@ -1,53 +1,59 @@
 /* global API_HOST:false, API_PROTOCOL:false */
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/bufferTime';
-import 'rxjs/add/operator/filter';
+import { Observable } from 'rxjs';
+import { bufferTime, filter } from 'rxjs/operators';
 import PropTypes from 'prop-types';
 import io from 'socket.io-client';
 
-import {
-  fetchDonationsFulfilled,
-  streamDonationsFulfilled,
-} from 'actions';
+import { fetchDonationsFulfilled, streamDonationsFulfilled } from 'actions';
 
 class DonationStream extends Component {
   static propTypes = {
     addDonations: PropTypes.func.isRequired,
     addNewDonations: PropTypes.func.isRequired,
-    children: PropTypes.element.isRequired,
-  }
+    children: PropTypes.element,
+  };
+
+  static defaultProps = {
+    children: null,
+  };
+
   componentDidMount() {
-    this.stream = this.createStream().subscribe(
-      donations => this.props.addNewDonations(donations),
-    );
+    const { addNewDonations } = this.props;
+    this.stream = this.createStream().subscribe(donations => addNewDonations(donations));
   }
+
   componentWillUnmount() {
     this.stream.unsubscribe();
   }
+
   createStream() {
+    const { addDonations } = this.props;
     this.socket = io(`${API_PROTOCOL}://${API_HOST}`);
 
-    this.socket.on('existing-donations', (update) => {
-      this.props.addDonations(update);
+    this.socket.on('existing-donations', update => {
+      addDonations(update);
     });
 
-    const observable = new Observable((observer) => {
-      this.socket.on('new-donation', (update) => {
-        observer.next(update.new_val);
+    const observable = new Observable(observer => {
+      this.socket.on('new-donation', update => {
+        observer.next(update);
       });
       return () => {
         this.socket.close();
       };
     });
 
-    return observable
-      .bufferTime(500)
-      .filter(donations => donations && donations.length);
+    return observable.pipe(
+      bufferTime(500),
+      filter(donations => donations && donations.length),
+    );
   }
+
   render() {
-    return this.props.children;
+    const { children } = this.props;
+    return children;
   }
 }
 
@@ -56,4 +62,7 @@ const mapDispatchToProps = dispatch => ({
   addNewDonations: donations => dispatch(streamDonationsFulfilled(donations)),
 });
 
-export default connect(null, mapDispatchToProps)(DonationStream);
+export default connect(
+  null,
+  mapDispatchToProps,
+)(DonationStream);

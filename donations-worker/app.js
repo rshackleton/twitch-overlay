@@ -1,9 +1,11 @@
-const donations = require('./services/donations');
-const logger = require('./services/logger');
+import { fetch } from './services/donations';
+import logger from './services/logger';
 
-const delay = process.env.POLL_INTERVAL || (1000 * 60 * 5);
-const interval = setInterval(donations.fetch, delay);
+const delay = process.env.POLL_INTERVAL || 1000 * 60 * 5;
 
-logger.debug(`Twitch overlay worker started with interval ${delay}`);
+logger.info(`Twitch overlay worker started with interval ${delay}`);
 
-donations.fetch();
+// Poll for new donations.
+setInterval(() => fetch(), delay);
+
+fetch();

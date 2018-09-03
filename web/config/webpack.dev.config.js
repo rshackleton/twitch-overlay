@@ -1,4 +1,3 @@
-/* eslint-disable */
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
@@ -6,26 +5,22 @@ const merge = require('webpack-merge');
 const root = path.join(__dirname, '../');
 
 module.exports = merge.smart(require('./webpack.config'), {
-  devtool: 'cheap-eval-source-map',
+  devServer: {
+    compress: true,
+    hot: true,
+    overlay: true,
+    port: 8080,
+    stats: 'errors-only',
+  },
+  devtool: 'source-map',
   entry: {
     main: [
-      'webpack-hot-middleware/client?reload=true',
+      'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
       'babel-polyfill',
       path.join(root, 'src'),
-    ]
-  },
-  module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
-      },
-      {
-        test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-      },
     ],
   },
+  mode: 'development',
   output: {
     filename: '[name].[hash].js',
     path: path.join(root, 'dist'),
@@ -34,7 +29,7 @@ module.exports = merge.smart(require('./webpack.config'), {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        'NODE_ENV': JSON.stringify('development')
+        NODE_ENV: JSON.stringify('development'),
       },
       API_HOST: JSON.stringify(process.env.API_HOST),
       API_PROTOCOL: JSON.stringify(process.env.API_PROTOCOL),

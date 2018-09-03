@@ -7,16 +7,9 @@ import 'rxjs/add/operator/filter';
 import PropTypes from 'prop-types';
 import io from 'socket.io-client';
 
-import {
-  fetchDonationsFulfilled,
-  streamDonationsFulfilled,
-  updateDonations,
-} from 'actions';
+import { fetchDonationsFulfilled, streamDonationsFulfilled, updateDonations } from 'actions';
 
-import {
-  DonationList,
-  DonationNotification,
-} from 'components';
+import { DonationList, DonationNotification } from 'components';
 
 class DonationStream extends Component {
   static propTypes = {
@@ -25,35 +18,37 @@ class DonationStream extends Component {
     donations: PropTypes.arrayOf(PropTypes.object).isRequired,
     newCount: PropTypes.number.isRequired,
     refresh: PropTypes.func.isRequired,
-  }
+  };
+
   componentDidMount() {
-    this.stream = this.createStream().subscribe(
-      donations => this.props.addNewDonations(donations),
-    );
+    const { addNewDonations } = this.props;
+    this.stream = this.createStream().subscribe(donations => addNewDonations(donations));
   }
+
   componentWillUnmount() {
     this.stream.unsubscribe();
   }
+
   createStream() {
+    const { addDonations } = this.props;
     this.socket = io(`${API_PROTOCOL}://${API_HOST}`);
 
-    this.socket.on('existing-donations', (update) => {
-      this.props.addDonations(update);
+    this.socket.on('existing-donations', update => {
+      addDonations(update);
     });
 
-    const observable = new Observable((observer) => {
-      this.socket.on('new-donation', (update) => {
-        observer.next(update.new_val);
+    const observable = new Observable(observer => {
+      this.socket.on('new-donation', donation => {
+        observer.next(donation);
       });
       return () => {
         this.socket.close();
       };
     });
 
-    return observable
-      .bufferTime(500)
-      .filter(donations => donations && donations.length);
+    return observable.bufferTime(500).filter(donations => donations && donations.length);
   }
+
   render() {
     const { donations, newCount, refresh } = this.props;
     return (
@@ -77,4 +72,7 @@ const mapDispatchToProps = dispatch => ({
   refresh: () => dispatch(updateDonations()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(DonationStream);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(DonationStream);
