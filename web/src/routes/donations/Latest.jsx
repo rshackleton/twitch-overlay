@@ -36,7 +36,7 @@ class DonationsNotifications extends Component {
   }
 
   playNotificationSound(donation) {
-    this.audio.src = notifications.find(n => n.min <= donation.amount).src;
+    this.audio.src = notifications.find(n => n.min <= donation.donorLocalAmount).src;
     this.audio.play();
   }
 

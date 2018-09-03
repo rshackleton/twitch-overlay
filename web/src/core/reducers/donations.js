@@ -46,12 +46,15 @@ function cleanDonation(donation) {
   return {
     ...donation,
     amount: parseFloat(donation.amount, 10),
+    donorLocalAmount: parseFloat(donation.donorLocalAmount, 10),
   };
 }
 
 /** Calculate donation total. */
 function getDonationTotal(items) {
-  return [...items].map(a => (Number.isNaN(a.amount) ? 0 : a.amount)).reduce((a, b) => a + b, 0);
+  return [...items]
+    .map(a => (Number.isNaN(a.donorLocalAmount) ? 0 : a.donorLocalAmount))
+    .reduce((a, b) => a + b, 0);
 }
 
 /** Get latest donation. */
@@ -70,7 +73,7 @@ function getTopDonation(items) {
 
 /** Sort donations by amount. */
 function sortByAmount(a, b) {
-  return a.amount < b.amount ? 1 : -1;
+  return a.donorLocalAmount < b.donorLocalAmount ? 1 : -1;
 }
 
 /** Sort donations by date. */

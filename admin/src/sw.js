@@ -48,7 +48,7 @@ messaging.setBackgroundMessageHandler(payload => {
         // New donation notification.
         notificationTitle = 'A new donation has been received!';
         notificationOptions = {
-          body: `A new donation of £${donation.amount} has been receieved from ${
+          body: `A new donation of £${donation.donorLocalAmount} has been receieved from ${
             donation.donorDisplayName
           }.`,
           data: { count: 1 },
