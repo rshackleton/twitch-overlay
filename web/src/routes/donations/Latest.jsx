@@ -5,10 +5,15 @@ import PropTypes from 'prop-types';
 
 import { DonationStream, DonationWithMessage } from 'components';
 
-import audioFairground from '../../audio/fairground.mp3';
-import audioWow from '../../audio/wow.mp3';
+import audioCheer from '../../audio/pirate-cheer.mp3';
+import audioDiablo from '../../audio/el-pollo-diablo.mp3';
+import audioLaugh from '../../audio/murray-laugh.mp3';
 
-const notifications = [{ min: 20, src: audioFairground }, { min: 0, src: audioWow }];
+const notifications = [
+  { min: 20, src: audioDiablo },
+  { min: 10, src: audioLaugh },
+  { min: 0, src: audioCheer },
+];
 
 const donationShape = PropTypes.shape({
   amount: PropTypes.number.isRequired,
