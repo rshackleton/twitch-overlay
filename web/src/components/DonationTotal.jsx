@@ -9,8 +9,6 @@ const Widget = styled('div')`
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  width: ${({ width }) => width}px;
-  height: ${({ height }) => height}px;
   padding: 32px;
   background: #000000;
   font-family: 'Monkey Island 1990';
@@ -50,8 +48,8 @@ const Separator = styled('span')`
   margin: 0 8px;
 `;
 
-const DonationTotal = ({ height, target, total, width }) => (
-  <Widget height={height} width={width}>
+const DonationTotal = ({ target, total }) => (
+  <Widget>
     <Heading>Total donations!</Heading>
     <Message>
       <Value>
@@ -68,10 +66,8 @@ const DonationTotal = ({ height, target, total, width }) => (
 );
 
 DonationTotal.propTypes = {
-  height: PropTypes.number.isRequired,
   target: PropTypes.number.isRequired,
   total: PropTypes.number.isRequired,
-  width: PropTypes.number.isRequired,
 };
 
 export default DonationTotal;

@@ -4,17 +4,15 @@ import PropTypes from 'prop-types';
 
 import { DonationStream, DonationTotal } from 'components';
 
-const DonationsGoal = ({ height, target, total, width }) => (
+const DonationsGoal = ({ target, total }) => (
   <DonationStream>
-    <DonationTotal height={height} target={target} total={total} width={width} />
+    <DonationTotal target={target} total={total} />
   </DonationStream>
 );
 
 DonationsGoal.propTypes = {
-  height: PropTypes.number.isRequired,
   target: PropTypes.number.isRequired,
   total: PropTypes.number.isRequired,
-  width: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = state => ({

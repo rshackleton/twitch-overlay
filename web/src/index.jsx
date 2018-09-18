@@ -9,6 +9,7 @@ import App from './App';
 injectGlobal`
   html {
     box-sizing: border-box;
+    overflow: hidden;
   }
   *, *:before, *:after {
     box-sizing: inherit;

@@ -3,6 +3,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const root = path.join(__dirname, '../');
 
+const spriteDir = path.join(root, 'src/img/sprites');
+
 module.exports = {
   module: {
     rules: [
@@ -19,7 +21,13 @@ module.exports = {
       },
       {
         test: /\.(jpg|jpeg|png)$/,
-        use: [{ loader: 'url-loader', options: { limit: 10000 } }],
+        use: [{ loader: 'file-loader' }],
+        exclude: spriteDir,
+      },
+      {
+        test: /\.(jpg|jpeg|png)$/,
+        use: [{ loader: 'url-loader', options: { limit: 100000 } }],
+        include: spriteDir,
       },
       {
         test: /\.(eot|svg|woff|woff2)$/,

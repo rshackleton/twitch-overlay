@@ -11,8 +11,6 @@ const Widget = styled('div')`
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  width: ${({ width }) => width}px;
-  height: ${({ height }) => height}px;
   padding: 32px;
   background: #000000;
   font-family: 'Monkey Island 1990';
@@ -60,8 +58,8 @@ function getSpeed(donation) {
   return `${contents.length / 4}s`;
 }
 
-const DonationWithMessage = ({ donation, height, title, width }) => (
-  <Widget height={height} width={width}>
+const DonationWithMessage = ({ donation, title }) => (
+  <Widget>
     <Heading>{title}</Heading>
     <Marquee delay="0.5s" height="45px" speed={getSpeed(donation)}>
       <Message>
@@ -81,9 +79,7 @@ DonationWithMessage.propTypes = {
     amount: PropTypes.number.isRequired,
     donorDisplayName: PropTypes.string.isRequired,
   }).isRequired,
-  height: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
-  width: PropTypes.number.isRequired,
 };
 
 export default DonationWithMessage;

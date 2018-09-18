@@ -11,9 +11,7 @@ const donationShape = PropTypes.shape({
 
 class DonationsNotifications extends Component {
   static propTypes = {
-    height: PropTypes.number.isRequired,
     topDonation: donationShape,
-    width: PropTypes.number.isRequired,
   };
 
   static defaultProps = {
@@ -21,15 +19,13 @@ class DonationsNotifications extends Component {
   };
 
   renderDonation() {
-    const { height, topDonation, width } = this.props;
+    const { topDonation } = this.props;
     if (topDonation) {
       return (
         <DonationWithMessage
           key={topDonation.externalId}
           donation={topDonation}
-          height={height}
           title="Top Donation"
-          width={width}
         />
       );
     }
