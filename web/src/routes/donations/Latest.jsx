@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -16,9 +16,7 @@ const donationShape = PropTypes.shape({
 
 class DonationsNotifications extends Component {
   static propTypes = {
-    height: PropTypes.number.isRequired,
     latestDonation: donationShape,
-    width: PropTypes.number.isRequired,
   };
 
   static defaultProps = {
@@ -62,15 +60,13 @@ class DonationsNotifications extends Component {
   }
 
   renderDonation() {
-    const { height, latestDonation, width } = this.props;
+    const { latestDonation } = this.props;
     if (latestDonation) {
       return (
         <DonationWithMessage
           key={latestDonation.externalId}
           donation={latestDonation}
-          height={height}
           title="New Donation"
-          width={width}
         />
       );
     }
@@ -80,10 +76,10 @@ class DonationsNotifications extends Component {
   render() {
     return (
       <DonationStream>
-        <div>
+        <Fragment>
           {this.renderAudio()}
           {this.renderDonation()}
-        </div>
+        </Fragment>
       </DonationStream>
     );
   }
