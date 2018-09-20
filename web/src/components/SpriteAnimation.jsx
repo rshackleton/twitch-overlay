@@ -13,9 +13,9 @@ function getSprites(name) {
 
 const Container = styled('div')`
   display: flex;
-  padding: 20px;
+  padding: 20px 20px 20px 40px;
   align-content: center;
-  justify-content: center;
+  justify-content: flex-start;
 `;
 
 class SpriteAnimation extends React.Component {
@@ -69,7 +69,7 @@ class SpriteAnimation extends React.Component {
 
     return (
       <Container>
-        <img key={sprite} alt="" src={sprite} />
+        <img alt="" src={sprite} />
       </Container>
     );
   }
