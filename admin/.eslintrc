@@ -5,6 +5,7 @@
   },
   "parser": "babel-eslint",
   "rules": {
+    "class-methods-use-this": "off",
     "strict": 0,
     "no-use-before-define": ["error", { "functions": false, "classes": true }],
     "import/extensions": "off",

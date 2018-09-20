@@ -20,9 +20,14 @@ class DonationStream extends Component {
     refresh: PropTypes.func.isRequired,
   };
 
+  socket = null;
+
+  stream = null;
+
   componentDidMount() {
     const { addNewDonations } = this.props;
-    this.stream = this.createStream().subscribe(donations => addNewDonations(donations));
+    const observable = this.createStream();
+    this.stream = observable.subscribe(donations => addNewDonations(donations));
   }
 
   componentWillUnmount() {
