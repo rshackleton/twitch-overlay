@@ -1,24 +1,6 @@
-/* eslint-disable */
-const path = require('path');
-const express = require('express');
-const morgan = require('morgan');
-
-const logger = require('./services/logger');
-
-const NODE_ENV = process.env.NODE_ENV || 'production';
-const HOST = process.env.HOST || '0.0.0.0';
-const PORT = process.env.VIRTUAL_PORT || 5000;
-
-const isProduction = (NODE_ENV === 'production');
-
-let app;
-
-if (isProduction) {
-  app = require('./app.prd');
+/* eslint-disable global-require */
+if (process.env.NODE_ENV === 'development') {
+  module.exports = require('./app.dev.js');
 } else {
-  app = require('./app.dev');
+  module.exports = require('./app.prd.js');
 }
-
-app.listen(PORT, HOST, function () {
-  logger.info(`Twitch overlay admin listening on http://${HOST}:${PORT}`);
-});

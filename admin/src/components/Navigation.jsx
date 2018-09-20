@@ -35,15 +35,15 @@ class Navigation extends Component {
       title: PropTypes.string.isRequired,
     }).isRequired,
     redirectTo: PropTypes.func.isRequired,
-  }
+  };
 
   state = {
     open: false,
-  }
+  };
 
   openDrawer = () => {
     this.setState({ open: true });
-  }
+  };
 
   closeDrawer = () => {
     this.setState({ open: false });
@@ -51,6 +51,7 @@ class Navigation extends Component {
 
   render() {
     const { classes, currentRoute, redirectTo } = this.props;
+    const { open } = this.state;
     const leftDrawerItems = (
       <List className={classes.list} disablePadding>
         <ListItem button onClick={() => redirectTo('/')}>
@@ -80,7 +81,7 @@ class Navigation extends Component {
         </AppBar>
         <Drawer
           anchor="left"
-          open={this.state.open}
+          open={open}
           onClick={this.closeDrawer}
           onRequestClose={this.closeDrawer}
         >
@@ -106,5 +107,8 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const StyledNavigation = withStyles(styles)(Navigation);
-const ConnectedNavigation = connect(mapStateToProps, mapDispatchToProps)(StyledNavigation);
+const ConnectedNavigation = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(StyledNavigation);
 export default withRouter(ConnectedNavigation);

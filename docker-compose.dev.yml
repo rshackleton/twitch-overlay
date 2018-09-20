@@ -1,22 +1,73 @@
-version: "2"
+version: '3'
 
 services:
   web:
-    command: ["yarn", "start:dev"]
-    volumes:
-      - "./web:/opt/app"
+    restart: always
+    build: ./web
+    image: rshackleton/twitch-overlay-web:local-dev
+    # image: rshackleton/twitch-overlay-web:release-2018
+    labels:
+      traefik.frontend.rule: 'Host:${WEB_HOST}'
+      traefik.port: '${WEB_PORT}'
+    ports:
+      - '${WEB_PORT}:${WEB_PORT}'
+    environment:
+      API_HOST: '${API_HOST}'
+      API_PROTOCOL: '${API_PROTOCOL}'
+      LOGGLY_TOKEN: '${LOGGLY_TOKEN}'
+      LOGGLY_SUBDOMAIN: '${LOGGLY_SUBDOMAIN}'
+      PORT: '${WEB_PORT}'
 
   admin:
-    command: ["yarn", "start:dev"]
-    volumes:
-      - "./admin:/opt/app"
+    restart: always
+    build: ./admin
+    image: rshackleton/twitch-overlay-admin:local-dev
+    # image: rshackleton/twitch-overlay-admin:release-2018
+    labels:
+      traefik.frontend.rule: 'Host:${ADMIN_HOST}'
+      traefik.port: '${ADMIN_PORT}'
+    expose:
+      - '${ADMIN_PORT}'
+    environment:
+      API_HOST: '${API_HOST}'
+      API_PROTOCOL: '${API_PROTOCOL}'
+      LOGGLY_TOKEN: '${LOGGLY_TOKEN}'
+      LOGGLY_SUBDOMAIN: '${LOGGLY_SUBDOMAIN}'
+      PORT: '${ADMIN_PORT}'
 
   api:
-    command: ["yarn", "start:dev"]
-    volumes:
-      - "./api:/opt/app"
+    restart: always
+    build: ./api
+    image: rshackleton/twitch-overlay-api:local-dev
+    # image: rshackleton/twitch-overlay-api:release-2018
+    labels:
+      traefik.frontend.rule: 'Host:${API_HOST}'
+      traefik.port: '${API_PORT}'
+    expose:
+      - '${API_PORT}'
+    environment:
+      FIREBASE_APIKEY: '${FIREBASE_APIKEY}'
+      FIREBASE_AUTHDOMAIN: '${FIREBASE_AUTHDOMAIN}'
+      FIREBASE_MESSAGING_SERVERKEY: '${FIREBASE_MESSAGING_SERVERKEY}'
+      FIREBASE_PROJECTID: '${FIREBASE_PROJECTID}'
+      LOGGLY_TOKEN: '${LOGGLY_TOKEN}'
+      LOGGLY_SUBDOMAIN: '${LOGGLY_SUBDOMAIN}'
+      PORT: '${API_PORT}'
 
-  donations-worker:
-    command: ["yarn", "start:dev"]
-    volumes:
-      - "./donations-worker:/opt/app"
+  worker:
+    restart: always
+    build: ./donations-worker
+    image: rshackleton/twitch-overlay-worker:local-dev
+    # image: rshackleton/twitch-overlay-worker:release-2018
+    labels:
+      traefik.enable: false
+    environment:
+      FIREBASE_APIKEY: '${FIREBASE_APIKEY}'
+      FIREBASE_AUTHDOMAIN: '${FIREBASE_AUTHDOMAIN}'
+      FIREBASE_MESSAGING_SERVERKEY: '${FIREBASE_MESSAGING_SERVERKEY}'
+      FIREBASE_PROJECTID: '${FIREBASE_PROJECTID}'
+      JUSTGIVING_APP_ID: '${JUSTGIVING_APP_ID}'
+      JUSTGIVING_PAGE: '${JUSTGIVING_PAGE}'
+      LOGGLY_TOKEN: '${LOGGLY_TOKEN}'
+      LOGGLY_SUBDOMAIN: '${LOGGLY_SUBDOMAIN}'
+      POLL_INTERVAL: '${POLL_INTERVAL}'

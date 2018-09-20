@@ -1,0 +1,5 @@
+{
+  "name": "twitch-overlay",
+  "restart": "always",
+  "project": "twitch-overlay"
+}

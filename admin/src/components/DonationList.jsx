@@ -27,10 +27,12 @@ const DonationList = ({ classes, donations }) => (
     <Grid container>
       <Grid item xs={12}>
         {donations.map(item => (
-          <Card key={item.id} className={classes.card}>
+          <Card key={item.externalId} className={classes.card}>
             <CardContent>
               <Typography type="headline">{item.donorDisplayName}</Typography>
-              <Typography type="subheading" paragraph>{numeral(item.amount).format('$0.00')}</Typography>
+              <Typography type="subheading" paragraph>
+                {numeral(item.donorLocalAmount).format('$0.00')}
+              </Typography>
               <Typography type="body2">{item.message || 'No message'}</Typography>
             </CardContent>
           </Card>

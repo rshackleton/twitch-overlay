@@ -1,17 +1,18 @@
-/* eslint-disable */
-const path = require('path');
-const express = require('express');
-const morgan = require('morgan');
+import express from 'express';
+import path from 'path';
 
-const logger = require('./services/logger');
+const HOST = process.env.HOST || '0.0.0.0';
+const PORT = process.env.PORT || 5000;
 
 const app = express();
 
-app.use(morgan('combined', { 'stream': logger.stream }));
 app.use(express.static(path.join(__dirname, 'dist')));
 
-app.get('*', (req, res) => {
+app.get('*', (_, res) => {
   res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 
-module.exports = app;
+app.listen(PORT, HOST, () => {
+  // eslint-disable-next-line no-console
+  console.log(`Twitch overlay admin listening on http://${HOST}:${PORT}`);
+});

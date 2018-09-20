@@ -1,11 +1,9 @@
-/* eslint-disable */
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
-const StatsWriterPlugin = require('webpack-stats-plugin').StatsWriterPlugin;
 
 const root = path.join(__dirname, '../');
+
+const spriteDir = path.join(root, 'src/img/sprites');
 
 module.exports = {
   module: {
@@ -23,9 +21,13 @@ module.exports = {
       },
       {
         test: /\.(jpg|jpeg|png)$/,
-        use: [
-          { loader: 'url-loader', options: { limit: 10000 } },
-        ],
+        use: [{ loader: 'file-loader' }],
+        exclude: spriteDir,
+      },
+      {
+        test: /\.(jpg|jpeg|png)$/,
+        use: [{ loader: 'url-loader', options: { limit: 100000 } }],
+        include: spriteDir,
       },
       {
         test: /\.(eot|svg|woff|woff2)$/,
@@ -37,18 +39,7 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    new HtmlWebpackPlugin({ template: path.join(root, 'src/index.html') }),
-    new ScriptExtHtmlWebpackPlugin({
-      defaultAttribute: 'defer',
-    }),
-    new StatsWriterPlugin({
-      transform: function(data, opts) {
-        let stats = opts.compiler.getStats().toJson({chunkModules: true});
-        return JSON.stringify(stats, null, 2);
-      },
-    }),
-  ],
+  plugins: [new HtmlWebpackPlugin({ template: path.join(root, 'src/index.html') })],
   resolve: {
     alias: {
       components: path.join(root, 'src/components'),

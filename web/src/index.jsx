@@ -1,17 +1,20 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { css } from 'glamor';
-import 'glamor/reset';
+import { injectGlobal } from 'react-emotion';
+import './styles/fonts';
+import './styles/reset';
 
 import App from './App';
 
-css.global('html', {
-  boxSizing: 'border-box',
-});
-
-css.global('*, *:before, *:after', {
-  boxSizing: 'inherit',
-});
+injectGlobal`
+  html {
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+`;
 
 render(<App />, document.getElementById('root'));
 

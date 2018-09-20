@@ -1,93 +1,86 @@
-const path = require('path');
-const cors = require('cors');
-const morgan = require('morgan');
+import logger from './services/logger';
 
-const app = require('express')();
-const bodyParser = require('body-parser');
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
+import cors from 'cors';
+import morgan from 'morgan';
 
-const donations = require('./services/donations');
-const logger = require('./services/logger');
-const messaging = require('./services/messaging');
+import express from 'express';
+import { json } from 'body-parser';
+import { createServer } from 'http';
+import socketIO from 'socket.io';
 
-const NODE_ENV = process.env.NODE_ENV || 'production';
-const HOST = process.env.HOST || '0.0.0.0';
-const PORT = process.env.VIRTUAL_PORT || 5000;
+import { all, stream as _stream } from './services/donations';
+import { send } from './services/messaging';
+import routes from './routes';
 
+// Create express app.
+const app = express();
+
+// Create HTTP server to serve express app.
+const server = createServer(app);
+
+// Create Socket.IO instance and attach to HTTP server.
+const io = socketIO(server);
+
+// Configure middleware.
 app.use(cors());
-app.use(bodyParser.json());
-app.use(morgan('combined', { 'stream': logger.stream }));
+app.use(json());
+app.use(
+  morgan('combined', {
+    stream: {
+      write: function(message) {
+        logger.info(message);
+      },
+    },
+  }),
+);
 
-// Get all donations (web socket is preferred).
-app.get('/donations', (req, res) => {
-  donations.all().then(models => res.json(models));
-});
-
-// Insert a fake donation (for testing).
-app.post('/donations/fake', (req, res) => {
-  donations.insertTest().then(model => res.json(model));
-});
-
-// Insert a fake donation (for testing).
-app.post('/messaging/token', (req, res) => {
-  try {
-    const token = req.body.token;
-
-    return messaging.storeToken(token)
-      .then(() => {
-        return messaging.subscribe(token)
-          .then((result) => {
-            return res.json(result);
-          })
-          .catch((result) => {
-            return res.json(false);
-          });
-      })
-      .catch((result) => {
-        return res.json(false);
-      });
-  } catch (err) {
-    logger.error(err);
-    return res.json(false);
-  }
+// Register all routes.
+Object.keys(routes).forEach(key => {
+  app.use(key, routes[key]);
 });
 
 // Start API server.
-server.listen(PORT, HOST, () => {
-  logger.debug(`Twitch overlay api listening on http://${HOST}:${PORT}`);
+const host = process.env.HOST || '0.0.0.0';
+const port = process.env.PORT || 5000;
+
+server.listen(port, host, () => {
+  logger.info(`Twitch overlay api listening on http://${host}:${port}`);
 });
 
 // Handle web socket connections.
-io.on('connection', (socket) => {
-  logger.debug('connection started');
+io.on('connection', socket => {
+  logger.info('connection started');
 
   // Emit all existing donations.
-  donations.all().then(models => {
+  all().then(models => {
     socket.emit('existing-donations', models);
   });
 
   // Handle web socket disconnections.
   socket.on('disconnect', () => {
-    logger.debug('connection ended');
+    logger.info('connection ended');
   });
 });
 
 // Start donation stream, emit all changes to web socket connections.
-donations.stream().then(stream => stream.subscribe(
-  function next(donation) {
-    logger.debug('donation stream: new', donation.new_val);
+_stream().subscribe(
+  function next(snapshot) {
+    snapshot.docChanges().forEach(change => {
+      const donation = change.doc.data();
 
-    // Send push notification.
-    messaging.send(donation.new_val);
+      logger.info(`donation stream: new ${donation.externalId}`);
 
-    // Send update to all connected clients.
-    io.emit('new-donation', donation);
+      // Send push notification.
+      send(donation);
+
+      // Send update to all connected clients.
+      io.emit('new-donation', donation);
+    });
   },
   function error(err) {
-    logger.error('donation stream: error');
+    logger.error(err);
   },
   function complete() {
-    logger.debug('donation stream: complete');
+    logger.info('donation stream: complete');
   },
-));
+);
