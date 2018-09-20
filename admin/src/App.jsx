@@ -12,6 +12,10 @@ import routes from 'routes';
 import history from './core/history';
 import store from './core/store';
 
+import AuthService from './services/AuthService';
+
+const authService = new AuthService();
+
 const styles = theme => ({
   root: {
     marginTop: 56,
@@ -21,20 +25,23 @@ const styles = theme => ({
   },
 });
 
-const App = ({ classes }) => (
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <div className={classes.root}>
-        <Navigation routes={routes} />
-        <div>
-          {routes.map(route => (
-            <Route {...route} />
-          ))}
+const App = ({ classes }) => {
+  const isAuthenticated = authService.isAuthenticated();
+  return (
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <div className={classes.root}>
+          <Navigation routes={routes} isAuthenticated={isAuthenticated} />
+          <div>
+            {routes.map(route => (
+              <Route {...route} />
+            ))}
+          </div>
         </div>
-      </div>
-    </ConnectedRouter>
-  </Provider>
-);
+      </ConnectedRouter>
+    </Provider>
+  );
+};
 
 App.propTypes = {
   classes: PropTypes.object.isRequired,

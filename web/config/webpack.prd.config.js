@@ -33,6 +33,7 @@ module.exports = merge.smart(require('./webpack.config'), {
       },
       API_HOST: JSON.stringify(process.env.API_HOST),
       API_PROTOCOL: JSON.stringify(process.env.API_PROTOCOL),
+      SL_ACCESS_TOKEN: JSON.stringify(process.env.SL_ACCESS_TOKEN),
     }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new ManifestPlugin({ fileName: 'webpack-manifest.json' }),

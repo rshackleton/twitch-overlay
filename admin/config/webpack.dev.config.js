@@ -49,6 +49,7 @@ module.exports = merge.smart(require('./webpack.config'), {
       },
       API_HOST: JSON.stringify(process.env.API_HOST),
       API_PROTOCOL: JSON.stringify(process.env.API_PROTOCOL),
+      SL_ACCESS_TOKEN: JSON.stringify(process.env.SL_ACCESS_TOKEN),
     }),
     new InjectManifest({
       swSrc: path.join(root, 'src/sw.js'),

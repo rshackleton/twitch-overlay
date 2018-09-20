@@ -52,6 +52,7 @@ class Navigation extends Component {
   render() {
     const { classes, currentRoute, redirectTo } = this.props;
     const { open } = this.state;
+
     const leftDrawerItems = (
       <List className={classes.list} disablePadding>
         <ListItem button onClick={() => redirectTo('/')}>
@@ -60,8 +61,12 @@ class Navigation extends Component {
         <ListItem button onClick={() => redirectTo('/donations')}>
           <ListItemText primary="Donations" />
         </ListItem>
+        <ListItem button onClick={() => redirectTo('/events')}>
+          <ListItemText primary="Events" />
+        </ListItem>
       </List>
     );
+
     return (
       <div>
         <AppBar color="primary">

@@ -9,6 +9,7 @@
     "build": "cross-env NODE_ENV=production webpack --color --config config/webpack.prd.config.js"
   },
   "dependencies": {
+    "auth0-js": "^9.7.3",
     "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
     "dotenv": "^4.0.0",
