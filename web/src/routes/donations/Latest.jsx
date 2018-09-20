@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 
 import { DonationStream, DonationWithMessage } from 'components';
 
-import audioCheer from '../../audio/pirate-cheer.mp3';
 import audioDiablo from '../../audio/el-pollo-diablo.mp3';
 import audioLaugh from '../../audio/murray-laugh.mp3';
+import audioIntro from '../../audio/theme-intro.mp3';
 
 const donationShape = PropTypes.shape({
   amount: PropTypes.number.isRequired,
@@ -26,9 +26,9 @@ class DonationsNotifications extends Component {
   audioRefs = [];
 
   notifications = [
-    { name: 'diablo', min: 20, src: audioDiablo },
-    { name: 'laugh', min: 10, src: audioLaugh },
-    { name: 'cheer', min: 0, src: audioCheer },
+    { name: 'cheer', min: 20, src: audioIntro },
+    { name: 'diablo', min: 10, src: audioDiablo },
+    { name: 'laugh', min: 0, src: audioLaugh },
   ];
 
   componentDidUpdate(prevProps) {

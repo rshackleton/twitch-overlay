@@ -26,7 +26,7 @@ const Background = styled('div')`
 
 const BottomBar = styled('div')`
   display: grid;
-  grid-template-columns: 1fr 2fr 2fr 2fr;
+  grid-template-columns: 140px 2fr 2fr 2fr;
   width: 100%;
   height: 180px;
   background: #000000;
@@ -53,7 +53,7 @@ export default () => (
     <Container>
       <Background />
       <BottomBar>
-        <StyledRandomAnimation name="amit" />
+        <StyledRandomAnimation />
         <StyledGoal />
         <StyledLatest />
         <StyledTop />
